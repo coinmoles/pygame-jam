@@ -17,16 +17,18 @@ class Player(Entity):
 
     def move(self):
         pressed_keys = pg.key.get_pressed()
-
         if pressed_keys[pg.K_LEFT]:
             self.acc.x = -ACC
-        if pressed_keys[pg.K_RIGHT]:
+        elif pressed_keys[pg.K_RIGHT]:
             self.acc.x = ACC
+        else:
+            self.acc = Vector2(0, 0)
 
     def update(self):
         self.acc.x += self.vel.x * FRIC
-        self.vel += self.acc
-        self.pos += self.vel + 0.5 * self.acc
+        if self.vel.x * (self.vel.x+self.acc.x) < 0: self.vel.x=0
+        else: self.vel += self.acc
+        self.pos += self.vel
 
         if self.pos.x > SCREEN.width:
             self.pos.x = 0
