@@ -21,3 +21,8 @@ class GameScene(Scene):
         self.player.move()
         self.player.update()
 
+    def handle_event(self, event):
+        super().handle_event(event)
+        if event.type == pg.KEYDOWN:
+            if event.key == pg.K_SPACE:
+                self.player.jump()

@@ -3,8 +3,10 @@ from constants import SCREEN
 from pygame.math import Vector2
 import pygame as pg
 
-ACC = 0.5
-FRIC = -0.12
+GROUND_ACC = 0.8
+AIR_ACC = 0.3
+GROUND_FRIC = -0.12
+AIR_FRIC = -0.05
 
 
 class Player(Entity):
@@ -17,20 +19,33 @@ class Player(Entity):
         self.vel = Vector2(0, 0)
         self.acc = Vector2(0, 0)
 
+        self.grounded = True
+
     def move(self):
         pressed_keys = pg.key.get_pressed()
-        if pressed_keys[pg.K_LEFT]:
-            self.acc.x = -ACC
-        elif pressed_keys[pg.K_RIGHT]:
-            self.acc.x = ACC
+
+        self.acc = Vector2(0, 0.5)
+
+        if self.grounded:
+            if pressed_keys[pg.K_LEFT]:
+                self.acc.x = -GROUND_ACC
+            elif pressed_keys[pg.K_RIGHT]:
+                self.acc.x = GROUND_ACC
         else:
-            self.acc = Vector2(0, 0.5)
+            if pressed_keys[pg.K_LEFT]:
+                self.acc.x = -AIR_ACC
+            elif pressed_keys[pg.K_RIGHT]:
+                self.acc.x = AIR_ACC
 
     def jump(self):
-        self.vel.y = -15
+        if self.grounded:
+            self.vel.y = -12
 
     def update(self):
-        self.acc.x += self.vel.x * FRIC
+        if self.grounded:
+            self.acc.x += self.vel.x * GROUND_FRIC
+        else:
+            self.acc.x += self.vel.x * AIR_FRIC
         self.vel += self.acc
         self.pos += self.vel + 0.5 * self.acc
 
@@ -45,4 +60,6 @@ class Player(Entity):
         if hits:
             self.pos.y = hits[0].rect.top + 1
             self.vel.y = 0
-
+            self.grounded = True
+        else:
+            self.grounded = False
