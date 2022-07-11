@@ -1,12 +1,13 @@
 import pygame as pg
-from constants import SCREEN, FPS
+from Maps.map1 import Map1
+from constants import *
 from Scene.GameScene import GameScene
 
 
 class Game:
     def __init__(self):
         pg.init()
-        self.currentScene = GameScene(self)
+        self.currentScene = GameScene(self, Map1)
         self.screen = pg.display.set_mode((SCREEN.width, SCREEN.height), 0, 32)
         self.clock = pg.time.Clock()
 
