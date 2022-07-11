@@ -51,15 +51,5 @@ class Player(Entity):
 
         super().update()
 
-        self.rect.midbottom = self.pos
-
-        hits = pg.sprite.spritecollide(self, self.scene.platforms, False)
-        if hits:
-            self.pos.y = hits[0].rect.top + 1
-            self.vel.y = 0
-            self.grounded = True
-        else:
-            self.grounded = False
-
     def dead(self):
         pass

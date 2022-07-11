@@ -7,8 +7,8 @@ from Scene.GameScene import GameScene
 class Game:
     def __init__(self):
         pg.init()
-        self.currentScene = GameScene(self, Map1)
         self.screen = pg.display.set_mode((SCREEN.width, SCREEN.height), 0, 32)
+        self.currentScene = GameScene(self.screen, Map1)
         self.clock = pg.time.Clock()
 
     def run(self):

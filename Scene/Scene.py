@@ -3,9 +3,9 @@ import sys
 
 
 class Scene:
-    def __init__(self, game):
+    def __init__(self, screen):
         self.entityList = pg.sprite.Group()
-        self.game = game
+        self.screen = screen
 
     def scene_start(self):
         pass
@@ -14,10 +14,10 @@ class Scene:
         for event in pg.event.get():
             self.handle_event(event)
 
-        self.game.screen.fill((255, 255, 255))
+        self.screen.fill((255, 255, 255))
 
         for entity in self.entityList:
-            self.game.screen.blit(entity.surf, entity.rect)
+            self.screen.blit(entity.surf, entity.rect)
 
     def scene_end(self):
         pass
