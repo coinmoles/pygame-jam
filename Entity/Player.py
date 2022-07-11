@@ -8,8 +8,10 @@ FRIC = -0.12
 
 
 class Player(Entity):
-    def __init__(self):
+    def __init__(self, scene):
         super().__init__((30, 30), (128, 255, 40), (10, 420))
+
+        self.scene = scene
 
         self.pos = Vector2((10, 385))
         self.vel = Vector2(0, 0)
@@ -22,13 +24,15 @@ class Player(Entity):
         elif pressed_keys[pg.K_RIGHT]:
             self.acc.x = ACC
         else:
-            self.acc = Vector2(0, 0)
+            self.acc = Vector2(0, 0.5)
+
+    def jump(self):
+        self.vel.y = -15
 
     def update(self):
         self.acc.x += self.vel.x * FRIC
-        if self.vel.x * (self.vel.x+self.acc.x) < 0: self.vel.x=0
-        else: self.vel += self.acc
-        self.pos += self.vel
+        self.vel += self.acc
+        self.pos += self.vel + 0.5 * self.acc
 
         if self.pos.x > SCREEN.width:
             self.pos.x = 0
@@ -36,3 +40,9 @@ class Player(Entity):
             self.pos.x = SCREEN.width
 
         self.rect.midbottom = self.pos
+
+        hits = pg.sprite.spritecollide(self, self.scene.platforms, False)
+        if hits:
+            self.pos.y = hits[0].rect.top + 1
+            self.vel.y = 0
+
