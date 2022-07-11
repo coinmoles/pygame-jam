@@ -12,9 +12,7 @@ class Scene:
 
     def update(self):
         for event in pg.event.get():
-            if event.type == pg.QUIT:
-                pg.quit()
-                sys.exit()
+            self.handle_event(event)
 
         self.game.screen.fill((255, 255, 255))
 
@@ -23,3 +21,8 @@ class Scene:
 
     def scene_end(self):
         pass
+
+    def handle_event(self, event):
+        if event.type == pg.QUIT:
+            pg.quit()
+            sys.exit()

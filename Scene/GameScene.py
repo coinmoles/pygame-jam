@@ -3,9 +3,8 @@ from Scene.Scene import Scene
 from Entity.Player import Player
 from Entity.Platform import Platform
 
-
 class GameScene(Scene):
-    def __init__(self, game):
+    def __init__(self, game, map):
         super().__init__(game)
         self.platforms = pg.sprite.Group()
 
@@ -21,3 +20,8 @@ class GameScene(Scene):
         self.player.move()
         self.player.update()
 
+    def handle_event(self, event):
+        super().handle_event(event)
+        if event.type == pg.KEYDOWN:
+            if event.key == pg.K_SPACE:
+                self.player.jump()
