@@ -3,9 +3,8 @@ from Scene.Scene import Scene
 from Entity.Player import Player
 from Entity.Platform import Platform
 
-
 class GameScene(Scene):
-    def __init__(self, game):
+    def __init__(self, game, map):
         super().__init__(game)
         self.platforms = pg.sprite.Group()
 
