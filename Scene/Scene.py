@@ -18,9 +18,7 @@ class Scene:
 
         self.game.screen.fill((255, 255, 255))
 
-        print(self.entityList)
         for entity in self.entityList:
-            print(entity.surf, entity.rect)
             self.game.screen.blit(entity.surf, entity.rect)
 
     def scene_end(self):

@@ -1,15 +1,21 @@
+import pygame as pg
 from Scene.Scene import Scene
 from Entity.Player import Player
 
 class GameScene(Scene):
     def __init__(self, game, map):
         super().__init__(game)
-        self.player = Player()
+        self.platforms = pg.sprite.Group()
 
+        self.player = Player(self)
+        platform = Platform()
+
+        self.platforms.add(platform)
         self.entityList.add(self.player)
-        for entity in map: self.entityList.add(entity)
+        self.entityList.add(platform)
 
     def update(self):
         super().update()
         self.player.move()
         self.player.update()
+
