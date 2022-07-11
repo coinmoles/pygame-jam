@@ -1,6 +1,7 @@
 import pygame as pg
 from Scene.Scene import Scene
 from Entity.Player import Player
+from Entity.Platform import Platform
 
 class GameScene(Scene):
     def __init__(self, game, map):
