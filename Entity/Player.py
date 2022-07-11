@@ -15,13 +15,11 @@ class Player(Entity):
 
         self.scene = scene
 
-        self.pos = Vector2((10, 385))
-        self.vel = Vector2(0, 0)
-        self.acc = Vector2(0, 0)
-        self.spawn_point = (30, 30)
+        self.spawn_point = Vector2(30, 30)
         self.ability = None
 
         self.grounded = True
+        self.is_dead = False
 
     def move(self):
         pressed_keys = pg.key.get_pressed()
@@ -44,6 +42,9 @@ class Player(Entity):
             self.vel.y = -15
 
     def update(self):
+        if self.pos.y > 800: #조건 변경 필요
+            self.is_dead = True
+
         if self.grounded:
             self.acc.x += self.vel.x * GROUND_FRIC
         else:
@@ -51,5 +52,14 @@ class Player(Entity):
 
         super().update()
 
-    def dead(self):
-        pass
+    def spawn_corpse(self):
+        corpse = Corpse(self.rect.size, self.pos)
+        return corpse
+
+    def die(self):
+        corpse = self.spawn_corpse()
+
+        self.pos = self.spawn_point.copy()
+        self.is_dead = False
+
+        return corpse

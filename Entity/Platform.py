@@ -3,5 +3,5 @@ from constants import SCREEN
 
 
 class Platform(Entity):
-    def __init__(self):
-        super().__init__((SCREEN.width, 20), (255, 0, 0), (SCREEN.width / 2, SCREEN.height - 10))
+    def __init__(self, size, color, center):
+        super().__init__(size, color, center)
