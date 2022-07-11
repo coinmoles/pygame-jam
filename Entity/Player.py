@@ -16,6 +16,8 @@ class Player(Entity):
         self.pos = Vector2((10, 385))
         self.vel = Vector2(0, 0)
         self.acc = Vector2(0, 0)
+        self.spawn_point = (30, 30)
+        self.ability = None
 
     def move(self):
         pressed_keys = pg.key.get_pressed()
@@ -46,3 +48,5 @@ class Player(Entity):
             self.pos.y = hits[0].rect.top + 1
             self.vel.y = 0
 
+    def dead(self):
+        pass
