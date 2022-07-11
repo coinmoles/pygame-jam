@@ -1,5 +1,5 @@
 from Entity.Entity import Entity
-from constants import SCREEN, UNITSIZE
+from constants import SCREEN
 from pygame.math import Vector2
 import pygame as pg
 
@@ -11,9 +11,15 @@ AIR_FRIC = -0.05
 
 class Player(Entity):
     def __init__(self, scene):
-        super().__init__((UNITSIZE, UNITSIZE), (128, 255, 40), (10, 420))
+        super().__init__((30, 30), (128, 255, 40), (10, 420))
 
         self.scene = scene
+
+        self.pos = Vector2((10, 385))
+        self.vel = Vector2(0, 0)
+        self.acc = Vector2(0, 0)
+        self.spawn_point = (30, 30)
+        self.ability = None
 
         self.grounded = True
 
@@ -54,3 +60,6 @@ class Player(Entity):
             self.grounded = True
         else:
             self.grounded = False
+
+    def dead(self):
+        pass
