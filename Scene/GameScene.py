@@ -15,7 +15,6 @@ class GameScene(Scene):
     def __init__(self, screen: pg.display, stage):
         super().__init__(screen)
         self.collidables = pg.sprite.Group()
-
         self.player = Player()
         self.add_entity(self.player)
         self.add_stage(stage)
