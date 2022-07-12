@@ -1,7 +1,9 @@
 from Entity.Entity import Entity
+from Entity.Corpse import Corpse
 from constants import SCREEN
 from pygame.math import Vector2
 import pygame as pg
+from constants import UNITSIZE
 
 GROUND_ACC = 0.8
 AIR_ACC = 0.3
@@ -10,21 +12,19 @@ AIR_FRIC = -0.05
 
 
 class Player(Entity):
-    def __init__(self, scene):
-        super().__init__((30, 30), (128, 255, 40), (10, 420))
-
-        self.scene = scene
+    def __init__(self):
+        super().__init__((UNITSIZE, UNITSIZE), (128, 255, 40), (10, 420))
 
         self.spawn_point = Vector2(30, 30)
         self.ability = None
+        self.prev_rect = self.rect.copy()
 
         self.grounded = True
-        self.is_dead = False
 
     def move(self):
         pressed_keys = pg.key.get_pressed()
 
-        self.acc = Vector2(0, 0.5)
+        self.acc = Vector2(0, 0.8)
 
         if self.grounded:
             if pressed_keys[pg.K_LEFT]:
@@ -39,16 +39,15 @@ class Player(Entity):
 
     def jump(self):
         if self.grounded:
-            self.vel.y = -15
+            self.vel.y = -30
 
     def update(self):
-        if self.pos.y > 800: #조건 변경 필요
-            self.is_dead = True
+        self.prev_rect = self.rect.copy()
 
         if self.grounded:
-            self.acc.x += self.vel.x * GROUND_FRIC
+            self.acc += self.vel * GROUND_FRIC
         else:
-            self.acc.x += self.vel.x * AIR_FRIC
+            self.acc += self.vel * AIR_FRIC
 
         super().update()
 
@@ -58,8 +57,6 @@ class Player(Entity):
 
     def die(self):
         corpse = self.spawn_corpse()
-
         self.pos = self.spawn_point.copy()
-        self.is_dead = False
 
         return corpse

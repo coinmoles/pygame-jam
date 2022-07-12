@@ -3,7 +3,7 @@ import sys
 
 
 class Scene:
-    def __init__(self, screen):
+    def __init__(self, screen: pg.Surface):
         self.entityList = pg.sprite.Group()
         self.screen = screen
 
@@ -22,7 +22,7 @@ class Scene:
     def scene_end(self):
         pass
 
-    def handle_event(self, event):
+    def handle_event(self, event: pg.event.Event):
         if event.type == pg.QUIT:
             pg.quit()
             sys.exit()
