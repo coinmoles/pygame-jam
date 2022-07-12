@@ -12,17 +12,13 @@ import math
 
 
 class GameScene(Scene):
-    def __init__(self, screen: pg.display, map):
+    def __init__(self, screen: pg.display, stage):
         super().__init__(screen)
         self.collidables = pg.sprite.Group()
 
         self.player = Player()
-        platform = KillPlatform((SCREEN.width, 20), (255, 0, 0), (SCREEN.width / 2, SCREEN.height / 2))
-        item = Item((50, 50), (0, 0, 255), (50, 50))
-
         self.add_entity(self.player)
-        self.add_entity(platform)
-        self.add_entity(item)
+        self.add_stage(stage)
 
     def update(self):
         self.player.move()
@@ -97,3 +93,7 @@ class GameScene(Scene):
         self.entityList.add(entity)
         if entity.collide_check:
             self.collidables.add(entity)
+
+    def add_stage(self, stage):
+        for entity in stage():
+            self.add_entity(entity)
