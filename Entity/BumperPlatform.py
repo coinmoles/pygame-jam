@@ -10,10 +10,10 @@ class BumperPlatform(Platform):
 
     def collide_player(self, player, side):
         if side == "top":
-            player.vel.y = -40
+            player.vel.y = -20
         elif side == "bottom":
-            player.vel.y = 40
+            player.vel.y = 20
         elif side == "left":
-            player.vel.x = -40
+            player.vel.x = -20
         elif side == "right":
-            player.vel.x = 40
+            player.vel.x = 20

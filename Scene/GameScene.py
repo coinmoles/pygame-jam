@@ -2,13 +2,10 @@ import pygame as pg
 from Scene.Scene import Scene
 from Entity.Entity import Entity
 from Entity.Player import Player
-from Entity.Platform import Platform
 from Entity.KillPlatform import KillPlatform
-from Entity.Item import Item
+from Item.BumperItem import BumperItem
 from constants import SCREEN
 from helper.determine_side import determine_side
-from helper.try_min_max import try_max, try_min
-import math
 
 
 class GameScene(Scene):
@@ -18,7 +15,7 @@ class GameScene(Scene):
 
         self.player = Player()
         platform = KillPlatform((SCREEN.width, 20), (255, 0, 0), (SCREEN.width / 2, SCREEN.height / 2))
-        item = Item((50, 50), (0, 0, 255), (50, 50))
+        item = BumperItem((50, 50), (0, 0, 255), (SCREEN.width / 2, 50))
 
         self.add_entity(self.player)
         self.add_entity(platform)
@@ -91,7 +88,8 @@ class GameScene(Scene):
             self.add_entity(self.player.spawn_corpse())
             self.player = Player()
             self.add_entity(self.player)
-        self.entityList.remove(filter(lambda entity: not entity.active, self.entityList))
+        self.entityList.remove(*filter(lambda entity: not entity.active, self.entityList))
+        self.collidables.remove(*filter(lambda entity: not entity.active, self.collidables))
 
     def add_entity(self, entity: Entity):
         self.entityList.add(entity)

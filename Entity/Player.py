@@ -1,9 +1,10 @@
 from Entity.Entity import Entity
-from Entity.Corpse import Corpse
+from Entity.Platform import Platform
 from constants import SCREEN
 from pygame.math import Vector2
 import pygame as pg
 from constants import UNITSIZE
+from typing import Callable, Union
 
 GROUND_ACC = 0.8
 AIR_ACC = 0.3
@@ -18,7 +19,7 @@ class Player(Entity):
         self.passable = True
 
         self.spawn_point = Vector2(30, 30)
-        self.ability = None
+        self.ability: Union[Callable[[], Corpse]] = lambda size, pos: Platform(size, (30, 30, 30), pos)
         self.prev_rect = self.rect.copy()
 
         self.grounded = True
@@ -54,5 +55,7 @@ class Player(Entity):
         super().update()
 
     def spawn_corpse(self):
-        corpse = Corpse(self.rect.size, self.pos)
-        return corpse
+        return self.ability(self.rect.size, self.pos)
+
+    def set_ability(self, ability: Callable[[Vector2, Vector2], Entity]):
+        self.ability = ability

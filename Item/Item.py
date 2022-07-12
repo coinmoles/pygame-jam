@@ -1,7 +1,7 @@
 from Entity.Entity import Entity
 from pygame.math import Vector2
 import math
-from typing import Tuple
+from typing import Tuple, Callable
 
 
 class Item(Entity):
@@ -17,4 +17,8 @@ class Item(Entity):
         super().update()
 
     def collide_player(self, player, side):
-        print("hello")
+        player.set_ability(self.ability_give())
+        self.despawn()
+
+    def ability_give(self) -> Callable[[], Entity]:
+        pass
