@@ -14,6 +14,8 @@ AIR_FRIC = -0.05
 class Player(Entity):
     def __init__(self):
         super().__init__((UNITSIZE, UNITSIZE), (128, 255, 40), (10, 420))
+        self.collide_check = False
+        self.passable = True
 
         self.spawn_point = Vector2(30, 30)
         self.ability = None
@@ -53,10 +55,4 @@ class Player(Entity):
 
     def spawn_corpse(self):
         corpse = Corpse(self.rect.size, self.pos)
-        return corpse
-
-    def die(self):
-        corpse = self.spawn_corpse()
-        self.pos = self.spawn_point.copy()
-
         return corpse

@@ -1,13 +1,11 @@
 from Entity.Entity import Entity
-from constants import SCREEN
+from Entity.Platform import Platform
 from typing import Tuple
 
 
-class Platform(Entity):
+class KillPlatform(Platform):
     def __init__(self, size: Tuple[int, int], color: Tuple[int, int, int], pos: Tuple[int, int]):
         super().__init__(size, color, pos)
-        self.collide_check = True
-        self.passable = False
 
     def collide_player(self, player, side):
-        pass
+        player.despawn()

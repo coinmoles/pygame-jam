@@ -1,7 +1,9 @@
 import pygame as pg
 from Scene.Scene import Scene
+from Entity.Entity import Entity
 from Entity.Player import Player
 from Entity.Platform import Platform
+from Entity.KillPlatform import KillPlatform
 from Entity.Item import Item
 from constants import SCREEN
 from helper.determine_side import determine_side
@@ -12,26 +14,22 @@ import math
 class GameScene(Scene):
     def __init__(self, screen: pg.display, map):
         super().__init__(screen)
-        self.platforms = pg.sprite.Group()
-        self.items = pg.sprite.Group()
+        self.collidables = pg.sprite.Group()
 
         self.player = Player()
-        platform = Platform((SCREEN.width, 20), (255, 0, 0), (SCREEN.width / 2, SCREEN.height - 10))
+        platform = KillPlatform((SCREEN.width, 20), (255, 0, 0), (SCREEN.width / 2, SCREEN.height / 2))
         item = Item((50, 50), (0, 0, 255), (50, 50))
 
-        self.platforms.add(platform)
-        self.items.add(item)
-
-        self.entityList.add(self.player)
-        self.entityList.add(platform)
-        self.entityList.add(item)
+        self.add_entity(self.player)
+        self.add_entity(platform)
+        self.add_entity(item)
 
     def update(self):
         self.player.move()
         for entity in self.entityList:
             entity.update()
         self.handle_collision()
-
+        self.handle_despawn()
         super().update()
 
     def handle_event(self, event: pg.event.Event):
@@ -41,29 +39,29 @@ class GameScene(Scene):
                 self.player.jump()
 
             if event.key == pg.K_q:
-                self.kill_player()
+                self.player.despawn()
 
     def handle_collision(self):
-        hits = pg.sprite.spritecollide(self.player, self.platforms, False)
+        hits = pg.sprite.spritecollide(self.player, self.collidables, False)
+
         if hits:
-            collisions = zip(
-                map(lambda hit: hit.rect, hits),
-                map(lambda hit: determine_side(self.player.prev_rect, hit.rect), hits)
-            )
+            sides = list(map(lambda hit: determine_side(self.player.prev_rect, hit.rect), hits))
             min_top = None
             max_bottom = None
             min_left = None
             max_right = None
 
-            for (rect, side) in collisions:
-                if side == "top" and (min_top is None or rect.top < min_top):
-                    min_top = rect.top
-                elif side == "bottom" and (max_bottom is None or rect.bottom > max_bottom):
-                    max_bottom = rect.bottom
-                elif side == "left" and (min_left is None or rect.left < min_left):
-                    min_left = rect.left
-                elif side == "right" and (max_right is None or rect.right > max_right):
-                    max_right = rect.right
+            for (platform, side) in zip(hits, sides):
+                if platform.passable:
+                    continue
+                if side == "top" and (min_top is None or platform.rect.top < min_top):
+                    min_top = platform.rect.top
+                elif side == "bottom" and (max_bottom is None or platform.rect.bottom > max_bottom):
+                    max_bottom = platform.rect.bottom
+                elif side == "left" and (min_left is None or platform.rect.left < min_left):
+                    min_left = platform.rect.left
+                elif side == "right" and (max_right is None or platform.rect.right > max_right):
+                    max_right = platform.rect.right
 
             if min_top is not None:
                 self.player.set_y(min_top)
@@ -79,13 +77,23 @@ class GameScene(Scene):
                 self.player.set_y(max_bottom + self.player.rect.height + 1)
                 self.player.vel.y = 0
 
+            for (platform, side) in zip(hits, sides):
+                platform.collide_player(self.player, side)
+
         else:
             self.player.grounded = False
 
         if self.player.pos.y > 800:  # 조건 변경 필요
-            self.kill_player()
+            self.player.despawn()
 
-    def kill_player(self):
-        corpse = self.player.die()
-        self.entityList.add(corpse)
-        self.platforms.add(corpse)
+    def handle_despawn(self):
+        if not self.player.active:
+            self.add_entity(self.player.spawn_corpse())
+            self.player = Player()
+            self.add_entity(self.player)
+        self.entityList.remove(filter(lambda entity: not entity.active, self.entityList))
+
+    def add_entity(self, entity: Entity):
+        self.entityList.add(entity)
+        if entity.collide_check:
+            self.collidables.add(entity)

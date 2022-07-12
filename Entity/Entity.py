@@ -7,6 +7,9 @@ from typing import Tuple
 class Entity(pg.sprite.Sprite):
     def __init__(self, size: Tuple[int, int], color: Tuple[int, int, int], pos: Tuple[int, int]):
         super().__init__()
+        self.active = True
+        self.collide_check = False
+        self.passable = False
 
         self.surf = pg.Surface(size)
         self.surf.fill(color)
@@ -38,3 +41,6 @@ class Entity(pg.sprite.Sprite):
     def set_y(self, y: int):
         self.pos.y = y
         self.rect.bottomleft = self.pos
+
+    def despawn(self):
+        self.active = False

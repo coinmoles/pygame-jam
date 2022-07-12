@@ -1,13 +1,13 @@
 from Entity.Entity import Entity
+from Entity.Platform import Platform
 from constants import SCREEN
 from typing import Tuple
 
 
-class Platform(Entity):
+class JumpPlatform(Platform):
     def __init__(self, size: Tuple[int, int], color: Tuple[int, int, int], pos: Tuple[int, int]):
         super().__init__(size, color, pos)
-        self.collide_check = True
-        self.passable = False
 
     def collide_player(self, player, side):
-        pass
+        if side == "top":
+            player.vel.y = -40
