@@ -24,7 +24,7 @@ class GameScene(Scene):
         self.add_stage()
 
         self.player = Player(self.player_spawn)
-        self.add_entity(self.player)
+        self.spawn_entity(self.player)
 
     def update(self):
         # 플레이어 이동
@@ -53,26 +53,13 @@ class GameScene(Scene):
         if event.type == SET_SPAWN:
             self.player_spawn = event.spawn
 
-        if event.type == DESPAWN:
-            entity: Entity = event.entity
-            if entity == self.player:
-                corpse = self.player.spawn_corpse()
-                self.corpses.append(corpse)
-                self.add_entity(corpse)
-
-                if len(self.corpses) > MAX_CORPSE:
-                    corpse = self.corpses.popleft()
-                    corpse.despawn()
-
-                self.player = Player(self.player_spawn)
-                self.add_entity(self.player)
-
-            self.entityList.remove(entity)
-            self.collidables.remove(entity)
-
         if event.type == SPAWN:
             entity: Entity = event.entity
-            self.add_entity(entity)
+            self.spawn_entity(entity)
+
+        if event.type == DESPAWN:
+            entity: Entity = event.entity
+            self.despawn_entity(entity)
 
     def handle_collision(self):
         hits = pg.sprite.spritecollide(self.player, self.collidables, False)
@@ -148,16 +135,32 @@ class GameScene(Scene):
         elif self.stage_rect.height - self.camera_base.y < SCREEN.height:
             self.camera_base.y = self.stage_rect.height - SCREEN.height
 
-    def add_entity(self, entity: Entity):
+    def spawn_entity(self, entity: Entity):
         self.entityList.add(entity)
         if entity.collide_check:
             self.collidables.add(entity)
+
+    def despawn_entity(self, entity: Entity):
+        if entity == self.player:
+            corpse = self.player.spawn_corpse()
+            self.corpses.append(corpse)
+            self.spawn_entity(corpse)
+
+            if len(self.corpses) > MAX_CORPSE:
+                corpse = self.corpses.popleft()
+                corpse.despawn()
+
+            self.player = Player(self.player_spawn)
+            self.spawn_entity(self.player)
+
+        self.entityList.remove(entity)
+        self.collidables.remove(entity)
 
     def add_stage(self):
         entities, stage_rect, player_spawn = self.stage()
         
         for entity in entities:
-            self.add_entity(entity)
+            self.spawn_entity(entity)
 
         self.stage_rect = stage_rect
         self.player_spawn = player_spawn
@@ -169,6 +172,6 @@ class GameScene(Scene):
 
         entities, stage_rect, player_spawn = self.stage()
         for entity in entities:
-            self.add_entity(entity)
+            self.spawn_entity(entity)
         self.player = Player(self.player_spawn)
-        self.add_entity(self.player)
+        self.spawn_entity(self.player)

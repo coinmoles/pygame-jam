@@ -4,6 +4,7 @@ import pygame as pg
 from pygame.math import Vector2
 from Entity.CheckPoint import CheckPoint
 from Entity.KillPlatform import KillPlatform
+from Entity.JumpPlatform import JumpPlatform
 from Item.JumpItem import JumpItem
 from Entity.Cannon import Cannon
 from constants import COLORS, UNITSIZE
@@ -14,6 +15,7 @@ TOKENS: Final[Dict[str, str]] = {
     "KillPlatform": "k",
     "CheckPoint": "c",
     "JumpItem": "j",
+    "JumpPlatform": "J",
     "SpawnPoint": "s",
     "Cannon": "g"
 }
@@ -43,6 +45,12 @@ def parse_stage(s: str) -> Callable[[], Tuple[pg.sprite.Group, pg.Rect, Vector2]
 
             if m[i][j] == TOKENS["KillPlatform"]:
                 entities.add(KillPlatform(size, position))
+
+            if m[i][j] == TOKENS["JumpPlatform"]:
+                entities.add(JumpPlatform(size, position))
+
+            if m[i][j] == TOKENS["JumpItem"]:
+                entities.add(JumpItem(size / 2, position - Vector2(-size.x, size.y) / 4))
 
             if m[i][j] == TOKENS["CheckPoint"]:
                 entities.add(CheckPoint(size, position))
