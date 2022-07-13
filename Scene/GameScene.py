@@ -91,11 +91,8 @@ class GameScene(Scene):
                 self.player.set_x(max_right + 2)
                 self.player.vel.x = 0
             if max_bottom is not None:
-                self.player.set_y(max_bottom + self.player.rect.height + 1)
+                self.player.set_y(max_bottom + self.player.rect.height)
                 self.player.vel.y = 0
-
-            if pg.sprite.spritecollide(self.player, self.collidables, False):
-                self.player.despawn()
 
             for (platform, side) in zip(hits, sides):
                 platform.collide_player(self.player, side)
