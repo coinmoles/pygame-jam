@@ -17,4 +17,8 @@ def stage1() -> pg.sprite.Group:
     entities.add(checkpoint)
     entities.add(Platform((SCREEN.width, 20), (255, 0, 0), (SCREEN.width / 2, SCREEN.height - 10)))
     entities.add(Platform((SCREEN.width, 80), (0, 255, 0), (SCREEN.width / 2, SCREEN.height - 10)))
-    return entities
+    
+    stage_rect = pg.Rect(0, 0, SCREEN.width * 2, SCREEN.height)
+    player_spawn = (0, 0)
+    
+    return entities, stage_rect, player_spawn

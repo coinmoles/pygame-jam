@@ -13,11 +13,10 @@ class GameScene(Scene):
         self.collidables = pg.sprite.Group()
         self.player_spawn = (0, 0)
         self.player = Player(self.player_spawn)
+        self.stage_rect = pg.rect.Rect(0, 0, SCREEN.width, SCREEN.height)
+        
         self.add_entity(self.player)
         self.add_stage(stage)
-
-        self.stage_rect = pg.rect.Rect(0, 0, SCREEN.width * 2, SCREEN.height)
-        self.player_spawn = (0, 0)
 
     def update(self):
         # 플레이어 이동
@@ -135,5 +134,10 @@ class GameScene(Scene):
             self.collidables.add(entity)
 
     def add_stage(self, stage):
-        for entity in stage():
+        entities, stage_rect, player_spawn = stage()
+        
+        for entity in entities:
             self.add_entity(entity)
+
+        self.stage_rect = stage_rect
+        self.player_spawn = player_spawn
