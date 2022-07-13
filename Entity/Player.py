@@ -1,6 +1,7 @@
+from Entity.Corpse import Corpse
 from Entity.Entity import Entity
 from Entity.Platform import Platform
-from constants import SCREEN
+from constants import COLORS, SCREEN
 from pygame.math import Vector2
 import pygame as pg
 from constants import UNITSIZE
@@ -14,12 +15,12 @@ AIR_FRIC = -0.05
 
 class Player(Entity):
     def __init__(self, pos):
-        super().__init__((UNITSIZE, UNITSIZE), (128, 255, 40), pos)
+        super().__init__((UNITSIZE, UNITSIZE), COLORS["yellow"]["300"], pos)
         self.collide_check = False
         self.passable = True
 
         self.spawn_point = Vector2(30, 30)
-        self.ability: Union[Callable[[], Corpse]] = lambda size, pos: Platform(size, (30, 30, 30), pos)
+        self.ability: Union[Callable[[], Corpse]] = lambda size, pos: Corpse(size, pos)
         self.prev_rect = self.rect.copy()
 
         self.grounded = True
