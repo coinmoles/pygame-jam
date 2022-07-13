@@ -1,6 +1,6 @@
 import pygame as pg
 from pygame.math import Vector2
-from constants import SCREEN, DESPAWN
+from constants import SCREEN, DESPAWN, UNITSIZE
 from typing import Tuple
 
 
@@ -19,10 +19,25 @@ class Entity(pg.sprite.Sprite):
         self.vel = Vector2(0, 0)
         self.acc = Vector2(0, 0)
 
-    def update(self):
+    def update(self, camera_base: Vector2):
+        if self.active:
+            self.update_active()
+        self.check_active(camera_base)
+
+    def update_active(self):
         self.vel += self.acc
         self.pos += self.vel + 0.5 * self.acc
         self.rect.bottomleft = self.pos
+
+
+    def check_active(self, camera_base):
+        rel_rect = self.rect.move(-camera_base)
+
+        if rel_rect.left > SCREEN.width + UNITSIZE or rel_rect.right < -UNITSIZE \
+                or rel_rect.top > SCREEN.height + UNITSIZE or rel_rect.bottom < -UNITSIZE:
+            self.active = False
+        else:
+            self.active = True
 
     def set_pos(self, pos: Vector2):
         self.pos = pos

@@ -44,7 +44,7 @@ class Player(Entity):
         if self.grounded:
             self.vel.y = -30
 
-    def update(self):
+    def update(self, camera_base: Vector2):
         self.prev_rect = self.rect.copy()
 
         if self.grounded:
@@ -52,7 +52,10 @@ class Player(Entity):
         else:
             self.acc += self.vel * AIR_FRIC
 
-        super().update()
+        super().update(camera_base)
+
+    def check_active(self, camera_base):
+        return
 
     def spawn_corpse(self):
         return self.ability(self.rect.size, self.pos)

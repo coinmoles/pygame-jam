@@ -3,7 +3,7 @@ from Scene.Scene import Scene
 from Entity.Entity import Entity
 from Entity.Player import Player
 from Item.BumperItem import BumperItem
-from constants import SCREEN, CAMERA_RECT, SET_SPAWN, DESPAWN
+from constants import SCREEN, CAMERA_RECT, SET_SPAWN, DESPAWN, SPAWN
 from helper.determine_side import determine_side
 
 
@@ -24,7 +24,7 @@ class GameScene(Scene):
 
         # 엔티티 위치 확정
         for entity in self.entityList:
-            entity.update()
+            entity.update(self.camera_base)
         self.handle_collision()
 
         # 카메라 이동
@@ -53,6 +53,10 @@ class GameScene(Scene):
                 self.add_entity(self.player)
             self.entityList.remove(entity)
             self.collidables.remove(entity)
+
+        if event.type == SPAWN:
+            entity: Entity = event.entity
+            self.add_entity(entity)
 
     def handle_collision(self):
         hits = pg.sprite.spritecollide(self.player, self.collidables, False)
