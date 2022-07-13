@@ -19,7 +19,7 @@ TOKENS: Final[Dict[str, str]] = {
 }
 
 
-def parse_stage(s: str) -> Callable[[], Tuple[pg.sprite.Group, pg.Rect, Tuple[int, int]]]:
+def parse_stage(s: str) -> Callable[[], Tuple[pg.sprite.Group, pg.Rect, Vector2]]:
     m = [list(l) for l in s.strip().split('\n')]
     
     assert len(m) > 0
@@ -31,7 +31,7 @@ def parse_stage(s: str) -> Callable[[], Tuple[pg.sprite.Group, pg.Rect, Tuple[in
 
     entities = pg.sprite.Group()
     stage_rect = pg.Rect(0, 0, width * UNITSIZE, height * UNITSIZE)
-    player_spawn = (0, 0)
+    player_spawn = Vector2(0, 0)
 
     for i in range(height):
         for j in range(width):
