@@ -4,7 +4,7 @@ from Entity.Entity import Entity
 from Entity.Player import Player
 from Entity.KillPlatform import KillPlatform
 from Item.BumperItem import BumperItem
-from constants import SCREEN
+from constants import SCREEN, CAMERA_RECT
 from helper.determine_side import determine_side
 
 
@@ -21,12 +21,24 @@ class GameScene(Scene):
         self.add_entity(platform)
         self.add_entity(item)
 
+        self.stage_rect = pg.rect.Rect(0, 0, SCREEN.width * 2, SCREEN.height)
+
     def update(self):
+        # 플레이어 이동
         self.player.move()
+
+        # 엔티티 위치 확정
         for entity in self.entityList:
             entity.update()
         self.handle_collision()
+
+        # 카메라 이동
+        self.move_camera()
+
+        # 엔티티 제거
         self.handle_despawn()
+
+        # 엔티티 그리기
         super().update()
 
     def handle_event(self, event: pg.event.Event):
@@ -80,8 +92,18 @@ class GameScene(Scene):
         else:
             self.player.grounded = False
 
-        if self.player.pos.y > 800:  # 조건 변경 필요
+        if self.player.rect.right > self.stage_rect.width:
+            self.player.set_x(self.stage_rect.width - self.player.rect.width)
+        elif self.player.rect.left < 0:
+            self.player.set_x(0)
+
+        if self.player.rect.bottom > self.stage_rect.bottom:
             self.player.despawn()
+        elif self.player.rect.top < 0:
+            self.player.set_y(self.player.rect.height)
+
+        # if self.player.pos.y > 800:  # 조건 변경 필요
+        #     self.player.despawn()
 
     def handle_despawn(self):
         if not self.player.active:
@@ -91,7 +113,27 @@ class GameScene(Scene):
         self.entityList.remove(*filter(lambda entity: not entity.active, self.entityList))
         self.collidables.remove(*filter(lambda entity: not entity.active, self.collidables))
 
+    def move_camera(self):
+        if self.player.rect.right - self.camera_base.x > CAMERA_RECT.right:
+            self.camera_base.x = self.player.rect.right - CAMERA_RECT.right
+        elif self.player.rect.left - self.camera_base.x < CAMERA_RECT.left:
+            self.camera_base.x = self.player.rect.left - CAMERA_RECT.left
+        if self.player.rect.top - self.camera_base.y < CAMERA_RECT.top:
+            self.camera_base.y = self.player.rect.top - CAMERA_RECT.top
+        elif self.player.rect.bottom - self.camera_base.y > CAMERA_RECT.bottom:
+            self.camera_base.y = self.player.rect.bottom - CAMERA_RECT.bottom
+
+        if self.camera_base.x < 0:
+            self.camera_base.x = 0
+        elif self.stage_rect.width - self.camera_base.x < SCREEN.width:
+            self.camera_base.x = self.stage_rect.width - SCREEN.width
+        if self.camera_base.y < 0:
+            self.camera_base.y = 0
+        elif self.stage_rect.height - self.camera_base.y < SCREEN.height:
+            self.camera_base.y = self.stage_rect.height - SCREEN.height
+
     def add_entity(self, entity: Entity):
         self.entityList.add(entity)
         if entity.collide_check:
             self.collidables.add(entity)
+

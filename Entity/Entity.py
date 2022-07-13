@@ -22,12 +22,6 @@ class Entity(pg.sprite.Sprite):
     def update(self):
         self.vel += self.acc
         self.pos += self.vel + 0.5 * self.acc
-
-        if self.pos.x > SCREEN.width:
-            self.pos.x = SCREEN.width
-        if self.pos.x < 0:
-            self.pos.x = 0
-
         self.rect.bottomleft = self.pos
 
     def set_pos(self, pos: Vector2):

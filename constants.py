@@ -6,3 +6,5 @@ SCREEN.width = 1600
 SCREEN.height = 900
 UNITSIZE = SCREEN.height / 9
 FPS = 60
+
+CAMERA_RECT = pg.rect.Rect(SCREEN.width / 3, SCREEN.height / 3, SCREEN.width / 3, SCREEN.height / 3)
