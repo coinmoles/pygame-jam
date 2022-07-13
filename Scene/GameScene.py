@@ -1,3 +1,4 @@
+from typing import Tuple
 import pygame as pg
 from Scene.Scene import Scene
 from Entity.Entity import Entity
@@ -8,15 +9,15 @@ from helper.determine_side import determine_side
 
 
 class GameScene(Scene):
-    def __init__(self, screen: pg.display, stage):
-        super().__init__(screen)
+    def __init__(self, screen: pg.display, stage, id: Tuple[int, int]):
+        super().__init__(screen, id)
         self.collidables = pg.sprite.Group()
         self.player_spawn = (0, 0)
         self.player = Player(self.player_spawn)
         self.stage_rect = pg.rect.Rect(0, 0, SCREEN.width, SCREEN.height)
         
-        self.add_entity(self.player)
         self.add_stage(stage)
+        self.add_entity(self.player)
 
     def update(self):
         # 플레이어 이동
@@ -68,17 +69,17 @@ class GameScene(Scene):
             min_left = None
             max_right = None
 
-            for (platform, side) in zip(hits, sides):
-                if platform.passable:
+            for (entity, side) in zip(hits, sides):
+                if entity.passable:
                     continue
-                if side == "top" and (min_top is None or platform.rect.top < min_top):
-                    min_top = platform.rect.top
-                elif side == "bottom" and (max_bottom is None or platform.rect.bottom > max_bottom):
-                    max_bottom = platform.rect.bottom
-                elif side == "left" and (min_left is None or platform.rect.left < min_left):
-                    min_left = platform.rect.left
-                elif side == "right" and (max_right is None or platform.rect.right > max_right):
-                    max_right = platform.rect.right
+                if side == "top" and (min_top is None or entity.rect.top < min_top):
+                    min_top = entity.rect.top
+                elif side == "bottom" and (max_bottom is None or entity.rect.bottom > max_bottom):
+                    max_bottom = entity.rect.bottom
+                elif side == "left" and (min_left is None or entity.rect.left < min_left):
+                    min_left = entity.rect.left
+                elif side == "right" and (max_right is None or entity.rect.right > max_right):
+                    max_right = entity.rect.right
 
             if min_top is not None:
                 self.player.set_y(min_top)
@@ -94,8 +95,8 @@ class GameScene(Scene):
                 self.player.set_y(max_bottom + self.player.rect.height)
                 self.player.vel.y = 0
 
-            for (platform, side) in zip(hits, sides):
-                platform.collide_player(self.player, side)
+            for (entity, side) in zip(hits, sides):
+                entity.collide_player(self.player, side)
 
         else:
             self.player.grounded = False

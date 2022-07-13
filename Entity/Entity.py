@@ -55,3 +55,6 @@ class Entity(pg.sprite.Sprite):
 
     def despawn(self):
         pg.event.post(pg.event.Event(DESPAWN, entity=self))
+
+    def collide_player(self, player, side):
+        pass

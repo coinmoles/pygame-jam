@@ -3,6 +3,7 @@ from typing import Callable, Dict, Final, Tuple
 import pygame as pg
 from pygame.math import Vector2
 from Entity.CheckPoint import CheckPoint
+from Entity.Door import Door
 from Entity.KillPlatform import KillPlatform
 from Item.JumpItem import JumpItem
 from Entity.Cannon import Cannon

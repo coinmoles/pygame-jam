@@ -1,14 +1,20 @@
+from __future__ import annotations
+from typing import Tuple, Union
 import pygame as pg
 import sys
 from pygame.math import Vector2
 
 
 class Scene:
-    def __init__(self, screen: pg.Surface):
-        self.entityList = pg.sprite.Group()
-        self.screen = screen
+    def __init__(self, screen: pg.Surface, id: Tuple[int, int]):
+        self.entityList: pg.sprite.Group = pg.sprite.Group()
+        self.screen:pg.Surface = screen
 
-        self.camera_base = Vector2(0, 0)
+        self.active:bool = True
+        self.next_scene : Union[Scene, None] = None
+        self.id: Tuple[int, int] = id
+
+        self.camera_base:Vector2 = Vector2(0, 0)
 
     def scene_start(self):
         pass
@@ -24,3 +30,9 @@ class Scene:
 
     def handle_event(self, event: pg.event.Event):
         pass
+
+    def set_next_scene(self, scene: Union[Scene, None]):
+        self.next_scene = scene
+    
+    def deactivate(self):
+        self.active = False
