@@ -14,9 +14,6 @@ class Scene:
         pass
 
     def update(self):
-        for event in pg.event.get():
-            self.handle_event(event)
-
         self.screen.fill((255, 255, 255))
 
         for entity in self.entityList:
@@ -26,6 +23,4 @@ class Scene:
         pass
 
     def handle_event(self, event: pg.event.Event):
-        if event.type == pg.QUIT:
-            pg.quit()
-            sys.exit()
+        pass

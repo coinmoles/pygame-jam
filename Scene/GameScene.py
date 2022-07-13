@@ -2,24 +2,18 @@ import pygame as pg
 from Scene.Scene import Scene
 from Entity.Entity import Entity
 from Entity.Player import Player
-from Entity.KillPlatform import KillPlatform
 from Item.BumperItem import BumperItem
 from constants import SCREEN, CAMERA_RECT
 from helper.determine_side import determine_side
 
 
 class GameScene(Scene):
-    def __init__(self, screen: pg.display, map):
+    def __init__(self, screen: pg.display, stage):
         super().__init__(screen)
         self.collidables = pg.sprite.Group()
-
         self.player = Player()
-        platform = KillPlatform((SCREEN.width, 20), (255, 0, 0), (SCREEN.width / 2, SCREEN.height / 2))
-        item = BumperItem((50, 50), (0, 0, 255), (SCREEN.width / 2, 50))
-
         self.add_entity(self.player)
-        self.add_entity(platform)
-        self.add_entity(item)
+        self.add_stage(stage)
 
         self.stage_rect = pg.rect.Rect(0, 0, SCREEN.width * 2, SCREEN.height)
 
@@ -137,3 +131,6 @@ class GameScene(Scene):
         if entity.collide_check:
             self.collidables.add(entity)
 
+    def add_stage(self, stage):
+        for entity in stage():
+            self.add_entity(entity)

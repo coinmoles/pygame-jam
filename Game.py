@@ -1,14 +1,15 @@
 import pygame as pg
-from Maps.map1 import Map1
+from Stages.stage1 import stage1
 from constants import *
 from Scene.GameScene import GameScene
+import sys
 
 
 class Game:
     def __init__(self):
         pg.init()
         self.screen = pg.display.set_mode((SCREEN.width, SCREEN.height), 0, 32)
-        self.currentScene = GameScene(self.screen, Map1)
+        self.currentScene = GameScene(self.screen, stage1)
         self.clock = pg.time.Clock()
 
     def run(self):
@@ -16,6 +17,12 @@ class Game:
 
         while True:
             self.currentScene.update()
+            for event in pg.event.get():
+                self.handle_event(event)
+                self.currentScene.handle_event(event)
 
             pg.display.update()
             self.clock.tick(FPS)
+
+    def handle_event(self, event: pg.event.Event):
+        if event.type == pg.QUIT: pg.quit(); sys.exit()
