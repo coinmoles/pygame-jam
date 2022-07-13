@@ -46,7 +46,7 @@ def parse_stage(s: str) -> Callable[[], Tuple[pg.sprite.Group, pg.Rect, Tuple[in
                 entities.add(CheckPoint(size, position))
             
             if m[i][j] == TOKENS["JumpItem"]:
-                entities.add(JumpItem(size / 2, position))
+                entities.add(JumpItem(size / 2, position - Vector2(-size.x, size.y) / 4))
 
             if m[i][j] == TOKENS["SpawnPoint"]:
                 player_spawn = position
