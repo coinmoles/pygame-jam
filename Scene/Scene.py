@@ -23,7 +23,7 @@ class Scene:
         self.screen.fill((255, 255, 255))
 
         for entity in self.entityList:
-            self.screen.blit(entity.surf, entity.rect.move(-self.camera_base))
+            entity.draw(self.screen, self.camera_base)
 
     def scene_end(self):
         pass

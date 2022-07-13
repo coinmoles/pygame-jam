@@ -56,5 +56,5 @@ class Entity(pg.sprite.Sprite):
     def despawn(self):
         pg.event.post(pg.event.Event(DESPAWN, entity=self))
 
-    def collide_player(self, player, side):
-        pass
+    def draw(self, screen, camera_base):
+        screen.blit(self.surf, self.rect.move(-camera_base))
