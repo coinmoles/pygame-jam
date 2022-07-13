@@ -6,13 +6,13 @@ from pygame.math import Vector2
 
 
 class Scene:
-    def __init__(self, screen: pg.Surface, id: Tuple[int, int]):
+    def __init__(self, screen: pg.Surface, _id: Tuple[int, int]):
         self.entityList: pg.sprite.Group = pg.sprite.Group()
         self.screen:pg.Surface = screen
 
         self.active:bool = True
         self.next_scene : Union[Scene, None] = None
-        self.id: Tuple[int, int] = id
+        self.id: Tuple[int, int] = _id
 
         self.camera_base:Vector2 = Vector2(0, 0)
 

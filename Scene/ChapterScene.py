@@ -6,13 +6,12 @@ import pygame as pg
 
 
 class ChapterScene(GameScene):
-    def __init__(self, screen: pg.display, stage, id:Tuple[int, int]):
-        super().__init__(screen, stage, id)
+    def __init__(self, screen: pg.display, stage, _id: Tuple[int, int]):
+        super().__init__(screen, stage, _id)
 
     def handle_event(self, event: pg.event.Event):
-        if event.type==pg.KEYDOWN:
-            if event.key==pg.K_RETURN:
-                print("enter pressed")
+        if event.type == pg.KEYDOWN:
+            if event.key == pg.K_RETURN:
                 self.open_door()                
                 
         super().handle_event(event)

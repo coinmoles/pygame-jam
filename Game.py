@@ -19,9 +19,9 @@ class Game:
         self.clock = pg.time.Clock()
 
     def run(self):
-        while True:
-            self.current_scene.scene_start()
+        self.current_scene.scene_start()
 
+        while True:
             while self.current_scene.active:
                 for event in pg.event.get():
                     self.handle_event(event)
@@ -33,7 +33,10 @@ class Game:
 
             self.current_scene.scene_end()
 
-            if self.current_scene.next_scene == None: pg.quit(); sys.exit()
+            if self.current_scene.next_scene is None:
+                pg.quit()
+                sys.exit()
+
             self.current_scene = self.current_scene.next_scene
 
 # pygame Event 이용해서 다시 구현해야됨

@@ -28,6 +28,8 @@ class Entity(pg.sprite.Sprite):
         self.pos += self.vel + 0.5 * self.acc
         self.rect.bottomleft = self.pos
 
+    def collide_player(self, player, side):
+        pass
 
     def check_active(self, camera_base):
         rel_rect = self.rect.move(-camera_base)

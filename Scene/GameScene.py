@@ -14,8 +14,8 @@ MAX_CORPSE = 5
 
 
 class GameScene(Scene):
-    def __init__(self, screen: pg.display, stage, id: Tuple[int, int]):
-        super().__init__(screen, id)
+    def __init__(self, screen: pg.display, stage, _id: Tuple[int, int]):
+        super().__init__(screen, _id)
         self.collidables = pg.sprite.Group()
         self.corpses: Deque[pg.sprite.Sprite] = deque()
         self.stage_rect = pg.Rect(0, 0, 0, 0)
@@ -27,8 +27,8 @@ class GameScene(Scene):
         self.player = Player(self.player_spawn)
         self.stage_rect = pg.rect.Rect(0, 0, SCREEN.width, SCREEN.height)
         
-        self.add_stage(stage)
-        self.add_entity(self.player)
+        self.add_stage()
+        self.spawn_entity(self.player)
 
     def update(self):
         # 플레이어 이동
