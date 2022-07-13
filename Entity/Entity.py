@@ -55,3 +55,6 @@ class Entity(pg.sprite.Sprite):
 
     def despawn(self):
         pg.event.post(pg.event.Event(DESPAWN, entity=self))
+
+    def draw(self, screen, camera_base):
+        screen.blit(self.surf, self.rect.move(-camera_base))
