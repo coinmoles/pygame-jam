@@ -15,6 +15,7 @@ TOKENS: Final[Dict[str, str]] = {
     "SpawnPoint": "s"
 }
 
+
 def parse_stage(s: str) -> Callable[[], Tuple[pg.sprite.Group, pg.Rect, Tuple[int, int]]]:
     m = [list(l) for l in s.strip().split('\n')]
     
@@ -36,16 +37,16 @@ def parse_stage(s: str) -> Callable[[], Tuple[pg.sprite.Group, pg.Rect, Tuple[in
             position = (UNITSIZE * j, UNITSIZE * i + UNITSIZE)
 
             if m[i][j] == TOKENS["Platform"]:
-                entities.add(Platform(size, COLORS["gray"]["600"], position))
+                entities.add(Platform(size, position))
 
             if m[i][j] == TOKENS["KillPlatform"]:
-                entities.add(KillPlatform(size, COLORS["red"]["300"], position))
+                entities.add(KillPlatform(size, position))
 
             if m[i][j] == TOKENS["CheckPoint"]:
-                entities.add(CheckPoint(COLORS["green"]["300"], position))
+                entities.add(CheckPoint(size, position))
             
             if m[i][j] == TOKENS["JumpItem"]:
-                entities.add(JumpItem(item_size, COLORS["blue"]["300"], position))
+                entities.add(JumpItem(item_size, position))
 
             if m[i][j] == TOKENS["SpawnPoint"]:
                 player_spawn = position

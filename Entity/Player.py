@@ -4,7 +4,7 @@ from Entity.Platform import Platform
 from constants import COLORS, SCREEN
 from pygame.math import Vector2
 import pygame as pg
-from constants import UNITSIZE
+from constants import UNITSIZE, COLORS
 from typing import Callable, Union
 
 GROUND_ACC = 0.8
@@ -15,7 +15,8 @@ AIR_FRIC = -0.05
 
 class Player(Entity):
     def __init__(self, pos):
-        super().__init__((UNITSIZE, UNITSIZE), COLORS["yellow"]["300"], pos)
+        super().__init__((UNITSIZE, UNITSIZE), pos)
+        self.set_color(COLORS["yellow"]["300"])
         self.collide_check = False
         self.passable = True
 
