@@ -8,4 +8,4 @@ from typing import Tuple, Callable
 
 class JumpItem(Item):
     def ability_give(self) -> Callable[[Vector2, Vector2], Entity]:
-        return lambda size, center: JumpPlatform(size, (0, 100, 100), center)
+        return lambda size, pos: JumpPlatform(size, pos)
