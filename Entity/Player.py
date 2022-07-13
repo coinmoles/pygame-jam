@@ -13,8 +13,8 @@ AIR_FRIC = -0.05
 
 
 class Player(Entity):
-    def __init__(self):
-        super().__init__((UNITSIZE, UNITSIZE), (128, 255, 40), (10, 420))
+    def __init__(self, pos):
+        super().__init__((UNITSIZE, UNITSIZE), (128, 255, 40), pos)
         self.collide_check = False
         self.passable = True
 
@@ -58,4 +58,5 @@ class Player(Entity):
         return self.ability(self.rect.size, self.pos)
 
     def set_ability(self, ability: Callable[[Vector2, Vector2], Entity]):
+        print(ability)
         self.ability = ability

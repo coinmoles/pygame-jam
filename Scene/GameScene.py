@@ -3,7 +3,7 @@ from Scene.Scene import Scene
 from Entity.Entity import Entity
 from Entity.Player import Player
 from Item.BumperItem import BumperItem
-from constants import SCREEN, CAMERA_RECT
+from constants import SCREEN, CAMERA_RECT, SET_SPAWN, DESPAWN
 from helper.determine_side import determine_side
 
 
@@ -11,11 +11,13 @@ class GameScene(Scene):
     def __init__(self, screen: pg.display, stage):
         super().__init__(screen)
         self.collidables = pg.sprite.Group()
-        self.player = Player()
+        self.player_spawn = (0, 0)
+        self.player = Player(self.player_spawn)
         self.add_entity(self.player)
         self.add_stage(stage)
 
         self.stage_rect = pg.rect.Rect(0, 0, SCREEN.width * 2, SCREEN.height)
+        self.player_spawn = (0, 0)
 
     def update(self):
         # 플레이어 이동
@@ -29,9 +31,6 @@ class GameScene(Scene):
         # 카메라 이동
         self.move_camera()
 
-        # 엔티티 제거
-        self.handle_despawn()
-
         # 엔티티 그리기
         super().update()
 
@@ -43,6 +42,18 @@ class GameScene(Scene):
 
             if event.key == pg.K_q:
                 self.player.despawn()
+
+        if event.type == SET_SPAWN:
+            self.player_spawn = event.spawn
+
+        if event.type == DESPAWN:
+            entity: Entity = event.entity
+            if entity == self.player:
+                self.add_entity(self.player.spawn_corpse())
+                self.player = Player(self.player_spawn)
+                self.add_entity(self.player)
+            self.entityList.remove(entity)
+            self.collidables.remove(entity)
 
     def handle_collision(self):
         hits = pg.sprite.spritecollide(self.player, self.collidables, False)
@@ -98,14 +109,6 @@ class GameScene(Scene):
 
         # if self.player.pos.y > 800:  # 조건 변경 필요
         #     self.player.despawn()
-
-    def handle_despawn(self):
-        if not self.player.active:
-            self.add_entity(self.player.spawn_corpse())
-            self.player = Player()
-            self.add_entity(self.player)
-        self.entityList.remove(*filter(lambda entity: not entity.active, self.entityList))
-        self.collidables.remove(*filter(lambda entity: not entity.active, self.collidables))
 
     def move_camera(self):
         if self.player.rect.right - self.camera_base.x > CAMERA_RECT.right:

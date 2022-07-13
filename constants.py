@@ -8,3 +8,6 @@ UNITSIZE = SCREEN.height / 9
 FPS = 60
 
 CAMERA_RECT = pg.rect.Rect(SCREEN.width / 3, SCREEN.height / 3, SCREEN.width / 3, SCREEN.height / 3)
+
+SET_SPAWN = pg.USEREVENT + 1
+DESPAWN = pg.USEREVENT + 2

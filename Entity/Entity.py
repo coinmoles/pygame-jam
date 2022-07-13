@@ -1,6 +1,6 @@
 import pygame as pg
 from pygame.math import Vector2
-from constants import SCREEN
+from constants import SCREEN, DESPAWN
 from typing import Tuple
 
 
@@ -37,4 +37,4 @@ class Entity(pg.sprite.Sprite):
         self.rect.bottomleft = self.pos
 
     def despawn(self):
-        self.active = False
+        pg.event.post(pg.event.Event(DESPAWN, entity=self))

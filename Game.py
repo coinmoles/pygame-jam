@@ -16,10 +16,10 @@ class Game:
         self.currentScene.scene_start()
 
         while True:
-            self.currentScene.update()
             for event in pg.event.get():
                 self.handle_event(event)
                 self.currentScene.handle_event(event)
+            self.currentScene.update()
 
             pg.display.update()
             self.clock.tick(FPS)
