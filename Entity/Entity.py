@@ -1,11 +1,11 @@
 import pygame as pg
 from pygame.math import Vector2
+from pygame.color import Color
 from constants import SCREEN, DESPAWN, UNITSIZE, COLORS
-from typing import Tuple
 
 
 class Entity(pg.sprite.Sprite):
-    def __init__(self, size: Tuple[int, int], pos: Tuple[int, int]):
+    def __init__(self, size: Vector2, pos: Vector2):
         super().__init__()
         self.active = True
         self.collide_check = False
@@ -50,7 +50,7 @@ class Entity(pg.sprite.Sprite):
         self.pos.y = y
         self.rect.bottomleft = self.pos
 
-    def set_color(self, color: Tuple[int, int, int]):
+    def set_color(self, color: Color):
         self.surf.fill(color)
 
     def despawn(self):

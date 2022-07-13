@@ -1,13 +1,12 @@
 import pygame as pg
 from Entity.Platform import Platform
 from Entity.KillPlatform import KillPlatform
-from typing import Tuple
 from pygame.math import Vector2
 from constants import COLORS, SPAWN
 
 
 class Cannon(Platform):
-    def __init__(self, size: Tuple[int, int], pos: Tuple[int, int]):
+    def __init__(self, size: Vector2, pos: Vector2):
         super().__init__(size, pos)
         self.set_color(COLORS["gray"]["600"])
 

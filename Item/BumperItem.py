@@ -3,13 +3,13 @@ from Entity.Entity import Entity
 from Entity.BumperPlatform import BumperPlatform
 from pygame.math import Vector2
 import math
-from typing import Tuple, Callable
+from typing import Callable
 
 
 class BumperItem(Item):
-    def __init__(self, size: Tuple[int, int], pos: Tuple[int, int]):
+    def __init__(self, size: Vector2, pos: Vector2):
         super().__init__(size, pos)
         self.set_color(COLORS["blue"]["300"])
 
     def ability_give(self) -> Callable[[Vector2, Vector2], Entity]:
-        return lambda size, center: BumperPlatform(size, (0, 100, 100), center)
+        return lambda size, pos: BumperPlatform(size, pos)

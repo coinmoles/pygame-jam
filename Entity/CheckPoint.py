@@ -1,11 +1,11 @@
 import pygame as pg
 from Entity.Entity import Entity
 from constants import UNITSIZE, SET_SPAWN, COLORS
-from typing import Tuple
+from pygame.math import Vector2
 
 
 class CheckPoint(Entity):
-    def __init__(self, size: Tuple[int, int], pos: Tuple[int, int]):
+    def __init__(self, size: Vector2, pos: Vector2):
         super().__init__(size, pos)
         self.set_color(COLORS["green"]["300"])
         self.collide_check = True

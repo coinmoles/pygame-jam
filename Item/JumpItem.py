@@ -3,12 +3,12 @@ from Entity.Entity import Entity
 from Entity.JumpPlatform import JumpPlatform
 from pygame.math import Vector2
 import math
-from typing import Tuple, Callable
+from typing import Callable
 from constants import COLORS
 
 
 class JumpItem(Item):
-    def __init__(self, size: Tuple[int, int], pos: Tuple[int, int]):
+    def __init__(self, size: Vector2, pos: Vector2):
         super().__init__(size, pos)
         self.set_color(COLORS["blue"]["300"])
 

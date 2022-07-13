@@ -1,11 +1,11 @@
 from Entity.Entity import Entity
 from Entity.Platform import Platform
 from constants import COLORS, SCREEN
-from typing import Tuple
+from pygame.math import Vector2
 
 
 class JumpPlatform(Platform):
-    def __init__(self, size: Tuple[int, int], pos: Tuple[int, int]):
+    def __init__(self, size: Vector2, pos: Vector2):
         super().__init__(size, pos)
         self.set_color(COLORS["blue"]["400"])
 

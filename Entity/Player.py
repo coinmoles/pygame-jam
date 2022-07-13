@@ -14,14 +14,14 @@ AIR_FRIC = -0.05
 
 
 class Player(Entity):
-    def __init__(self, pos):
-        super().__init__((UNITSIZE, UNITSIZE), pos)
+    def __init__(self, pos: Vector2):
+        super().__init__(Vector2(UNITSIZE, UNITSIZE), pos)
         self.set_color(COLORS["yellow"]["300"])
         self.collide_check = False
         self.passable = True
 
         self.spawn_point = Vector2(30, 30)
-        self.ability: Union[Callable[[], Corpse]] = lambda size, pos: Corpse(size, pos)
+        self.ability: Union[Callable[[], Corpse]] = lambda size, c_pos: Corpse(size, c_pos)
         self.prev_rect = self.rect.copy()
 
         self.grounded = True

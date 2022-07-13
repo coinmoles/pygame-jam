@@ -1,6 +1,7 @@
 from typing import Callable, Dict, Final, Tuple
 
 import pygame as pg
+from pygame.math import Vector2
 from Entity.CheckPoint import CheckPoint
 from Entity.KillPlatform import KillPlatform
 from Item.JumpItem import JumpItem
@@ -32,9 +33,8 @@ def parse_stage(s: str) -> Callable[[], Tuple[pg.sprite.Group, pg.Rect, Tuple[in
 
     for i in range(height):
         for j in range(width):
-            size = (UNITSIZE, UNITSIZE)
-            item_size = (UNITSIZE / 2, UNITSIZE / 2)
-            position = (UNITSIZE * j, UNITSIZE * i + UNITSIZE)
+            size = Vector2(UNITSIZE, UNITSIZE)
+            position = Vector2(UNITSIZE * j, UNITSIZE * i + UNITSIZE)
 
             if m[i][j] == TOKENS["Platform"]:
                 entities.add(Platform(size, position))
@@ -46,11 +46,10 @@ def parse_stage(s: str) -> Callable[[], Tuple[pg.sprite.Group, pg.Rect, Tuple[in
                 entities.add(CheckPoint(size, position))
             
             if m[i][j] == TOKENS["JumpItem"]:
-                entities.add(JumpItem(item_size, position))
+                entities.add(JumpItem(size / 2, position))
 
             if m[i][j] == TOKENS["SpawnPoint"]:
                 player_spawn = position
-    
 
     def stage():
         return entities, stage_rect, player_spawn
