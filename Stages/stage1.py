@@ -1,8 +1,9 @@
 from Entity.Platform import Platform
 from Entity.KillPlatform import KillPlatform
-from Entity.Item import Item
+from Item.Item import Item
 from constants import SCREEN
 import pygame as pg
+
 
 def stage1() -> pg.sprite.Group: 
     entities = pg.sprite.Group()
