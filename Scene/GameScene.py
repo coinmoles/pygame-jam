@@ -2,6 +2,7 @@ from typing import Tuple
 import pygame as pg
 from pygame.math import Vector2
 from Scene.Scene import Scene
+from SceneData.parse_stage import parse_stage
 from Entity.Entity import Entity
 from Entity.Player import Player
 from Item.BumperItem import BumperItem
@@ -14,13 +15,13 @@ MAX_CORPSE = 5
 
 
 class GameScene(Scene):
-    def __init__(self, screen: pg.display, stage, _id: Tuple[int, int]):
-        super().__init__(screen, _id)
+    def __init__(self, stage: str, _id: Tuple[int, int]):
+        super().__init__(_id)
         self.collidables = pg.sprite.Group()
         self.corpses: Deque[pg.sprite.Sprite] = deque()
         self.stage_rect = pg.Rect(0, 0, 0, 0)
         self.player_spawn = Vector2(0, 0)
-        self.stage = stage
+        self.stage = parse_stage(stage)
 
         self.add_stage()
 

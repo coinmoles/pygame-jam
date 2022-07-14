@@ -1,6 +1,4 @@
-from Chapters.parse_stage import parse_stage
-
-stage1_3 = parse_stage("""
+stage1_3 = """
 ........................p........................
 ........................p............j...........
 pppppppppppppppppkkkkkkkk....................pppp
@@ -13,4 +11,4 @@ pppppppppppppppppkkkkkkkk....................pppp
 ............p....................................
 .s...j......p....................................
 pppppppppkkkppppppppppppppppppppppppppppppppppppp
-""")
+"""

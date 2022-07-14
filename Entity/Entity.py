@@ -1,6 +1,7 @@
 import pygame as pg
 from pygame.math import Vector2
 from pygame.color import Color
+from globals import GLOBALS
 from constants import SCREEN, DESPAWN, UNITSIZE, COLORS
 
 
@@ -58,5 +59,5 @@ class Entity(pg.sprite.Sprite):
     def despawn(self):
         pg.event.post(pg.event.Event(DESPAWN, entity=self))
 
-    def draw(self, screen, camera_base):
-        screen.blit(self.surf, self.rect.move(-camera_base))
+    def draw(self, camera_base):
+        GLOBALS.screen.blit(self.surf, self.rect.move(-camera_base))

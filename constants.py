@@ -12,6 +12,7 @@ CAMERA_RECT = pg.rect.Rect(SCREEN.width / 3, SCREEN.height / 3, SCREEN.width / 3
 SET_SPAWN = pg.USEREVENT + 1
 DESPAWN = pg.USEREVENT + 2
 SPAWN = pg.USEREVENT + 3
+CHANGE_SCENE = pg.USEREVENT + 4
 
 COLORS = {
     'black': (0, 0, 0),
