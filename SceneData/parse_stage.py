@@ -6,7 +6,7 @@ from Entity.CheckPoint import CheckPoint
 from Entity.Door import Door
 from Entity.KillPlatform import KillPlatform
 from Entity.JumpPlatform import JumpPlatform
-from Item.JumpItem import JumpItem
+from Entity.Item.JumpItem import JumpItem
 from Entity.Goal import Goal
 from Entity.Cannon import Cannon
 from constants import COLORS, UNITSIZE

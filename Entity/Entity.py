@@ -19,12 +19,12 @@ class Entity(pg.sprite.Sprite):
         self.vel = Vector2(0, 0)
         self.acc = Vector2(0, 0)
 
-    def update(self, camera_base: Vector2):
+    def update(self, camera_base: Vector2, timer: int):
         if self.active:
-            self.update_active()
+            self.update_active(timer)
         self.check_active(camera_base)
 
-    def update_active(self):
+    def update_active(self, timer):
         self.vel += self.acc
         self.pos += self.vel + 0.5 * self.acc
         self.rect.bottomleft = self.pos

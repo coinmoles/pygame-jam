@@ -12,13 +12,10 @@ class Cannon(Platform):
 
         self.collide_check = True
         self.passable = False
-        self.timer = 0
 
-    def update_active(self):
-        self.timer += 1
-        if self.timer >= FPS * 5:
+    def update_active(self, timer: int):
+        if timer % (FPS * 5) == 0:
             pg.event.post(pg.event.Event(
                 SPAWN, entity=Fireball(Vector2(UNITSIZE / 2, UNITSIZE / 2),
                 self.pos - Vector2(self.rect.width * 3 / 4, self.rect.height * 1 / 4),  Vector2(-5, 0))
             ))
-            self.timer = 0

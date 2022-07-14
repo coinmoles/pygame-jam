@@ -5,7 +5,7 @@ from pygame.math import Vector2
 from Entity.CheckPoint import CheckPoint
 from Entity.Door import Door
 from Entity.KillPlatform import KillPlatform
-from Item.JumpItem import JumpItem
+from Entity.Item.JumpItem import JumpItem
 from Entity.Cannon import Cannon
 from constants import COLORS, UNITSIZE
 from Entity.Platform import Platform
@@ -18,7 +18,7 @@ TOKENS: Final[Dict[str, str]] = {
 
 def parse_menu(s: str) -> Callable[[], Tuple[pg.sprite.Group, pg.Rect, Tuple[int, int]]]:
     m = [list(l) for l in s.strip().split('\n')]
-    
+
     assert len(m) > 0
     assert len(m[0]) > 0
     assert s.count(TOKENS["SpawnPoint"]) == 1
@@ -37,14 +37,14 @@ def parse_menu(s: str) -> Callable[[], Tuple[pg.sprite.Group, pg.Rect, Tuple[int
 
             if m[i][j] == TOKENS["Platform"]:
                 entities.add(Platform(size, position))
-            
+
             if m[i][j] == TOKENS["SpawnPoint"]:
                 player_spawn = position
 
             if m[i][j] in ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]:
-                entities.add(Door(size*1.5, position, int(m[i][j]))) 
+                entities.add(Door(size * 1.5, position, int(m[i][j])))
 
     def stage():
         return entities, stage_rect, player_spawn
-    
+
     return stage

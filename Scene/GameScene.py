@@ -5,7 +5,6 @@ from Scene.Scene import Scene
 from SceneData.parse_stage import parse_stage
 from Entity.Entity import Entity
 from Entity.Player import Player
-from Item.BumperItem import BumperItem
 from constants import SCREEN, CAMERA_RECT, SET_SPAWN, DESPAWN, SPAWN
 from helper.determine_side import determine_side
 from collections import deque
@@ -37,7 +36,7 @@ class GameScene(Scene):
 
         # 엔티티 위치 확정
         for entity in self.entityList:
-            entity.update(self.camera_base)
+            entity.update(self.camera_base, self.timer)
         self.handle_collision()
 
         # 카메라 이동

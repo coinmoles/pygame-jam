@@ -7,9 +7,9 @@ import pygame as pg
 from constants import UNITSIZE, COLORS
 from typing import Callable, Union
 
-GROUND_ACC = 0.8
+GROUND_ACC = 1.0
 AIR_ACC = 0.3
-GROUND_FRIC = -0.12
+GROUND_FRIC = -0.15
 AIR_FRIC = -0.05
 
 
@@ -33,9 +33,9 @@ class Player(Entity):
 
         if self.grounded:
             if pressed_keys[pg.K_LEFT]:
-                self.acc.x = -GROUND_ACC
+                self.vel.x = GROUND_ACC / GROUND_FRIC
             elif pressed_keys[pg.K_RIGHT]:
-                self.acc.x = GROUND_ACC
+                self.vel.x = - GROUND_ACC / GROUND_FRIC
         else:
             if pressed_keys[pg.K_LEFT]:
                 self.acc.x = -AIR_ACC
@@ -46,7 +46,7 @@ class Player(Entity):
         if self.grounded:
             self.vel.y = -30
 
-    def update(self, camera_base: Vector2):
+    def update(self, camera_base: Vector2, timer: int):
         self.prev_rect = self.rect.copy()
 
         if self.grounded:
@@ -54,7 +54,7 @@ class Player(Entity):
         else:
             self.acc += self.vel * AIR_FRIC
 
-        super().update(camera_base)
+        super().update(camera_base, timer)
 
     def check_active(self, camera_base):
         return
@@ -63,5 +63,4 @@ class Player(Entity):
         return self.ability(self.rect.size, self.pos)
 
     def set_ability(self, ability: Callable[[Vector2, Vector2], Entity]):
-        print(ability)
         self.ability = ability

@@ -11,10 +11,10 @@ class Item(Entity):
         self.passable = True
         self.timer = 0
 
-    def update(self, camera_base: Vector2):
+    def update(self, camera_base: Vector2, timer: int):
         self.vel = Vector2(0, math.sin(self.timer * math.pi / 20))
         self.timer += 1
-        super().update(camera_base)
+        super().update(camera_base, timer)
 
     def collide_player(self, player, side):
         player.set_ability(self.ability_give())

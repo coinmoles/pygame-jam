@@ -2,7 +2,7 @@ from errno import EEXIST
 import imp
 from typing import Tuple
 import pygame as pg
-from SceneData.chapter_menu.chapter1 import chapter1
+from SceneData.main_menu import main_menu
 from Scene.ChapterScene import ChapterScene
 from constants import *
 from Scene.GameScene import GameScene
@@ -15,7 +15,7 @@ class Game:
     def __init__(self):
         pg.init()
         GLOBALS.set_screen(pg.display.set_mode((SCREEN.width, SCREEN.height), 0, 32))
-        self.current_scene = ChapterScene(chapter1, (0, 0))
+        self.current_scene = ChapterScene(main_menu, (0, 0))
         self.clock = pg.time.Clock()
 
     def run(self):

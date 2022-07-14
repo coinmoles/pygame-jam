@@ -8,8 +8,8 @@ from SceneData.chapter1.stage1_4 import stage1_4
 from SceneData.chapter1.stage1_5 import stage1_5
 
 stages = {
-    "main_menu" : main_menu,
-    "chapter_menu" : {
+    "main_menu": main_menu,
+    "chapter_menu": {
         "ch1": chapter1,
         "ch2": chapter2
     },

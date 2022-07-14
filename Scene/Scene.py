@@ -11,6 +11,7 @@ class Scene:
         self.entityList: pg.sprite.Group = pg.sprite.Group()
 
         self.id: Tuple[int, int] = _id
+        self.timer = 0
 
         self.camera_base: Vector2 = Vector2(0, 0)
 
@@ -22,6 +23,8 @@ class Scene:
 
         for entity in self.entityList:
             entity.draw(self.camera_base)
+
+        self.timer += 1
 
     def scene_end(self):
         pass
