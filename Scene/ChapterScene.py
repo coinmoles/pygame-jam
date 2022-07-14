@@ -1,5 +1,4 @@
 from typing import Tuple
-from SceneData.parse_id import parse_id
 from Entity.Door import Door
 from Scene.Scene import Scene
 from Scene.GameScene import GameScene
@@ -25,11 +24,9 @@ class ChapterScene(GameScene):
         hits = pg.sprite.spritecollide(self.player, self.collidables, False)
 
         assert len(hits) <= 1
-        for entity in hits:
-            next_scene: Scene
-            if self.id[0] == 0:
-                next_scene = ChapterScene(parse_id(entity.id, 0), (entity.id, 0))
-            else:
-                next_scene = GameScene(parse_id(self.id[0], entity.id), (self.id[0], entity.id))
 
-            pg.event.post(pg.event.Event(CHANGE_SCENE, next_scene=next_scene))
+        entity = hits[0]
+        if self.id[0] == 0:
+            pg.event.post(pg.event.Event(CHANGE_SCENE, next_scene_id=(entity.id, 0)))
+        else:
+            pg.event.post(pg.event.Event(CHANGE_SCENE, next_scene_id=(self.id[0], entity.id)))

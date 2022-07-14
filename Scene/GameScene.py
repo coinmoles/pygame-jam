@@ -21,7 +21,7 @@ class GameScene(Scene):
         self.corpses: Deque[pg.sprite.Sprite] = deque()
         self.stage_rect = pg.Rect(0, 0, 0, 0)
         self.player_spawn = Vector2(0, 0)
-        self.stage = parse_stage(stage)
+        self.stage = parse_stage(stage, _id)
 
         self.add_stage()
 

@@ -23,6 +23,6 @@ p......p...p...p........p
 p......ppppppppppppppppppp
 p.......k.....k.........p
 p.......................p
-p.c........k.....k......p
+p.c........k.....k...d..p
 ppppppppppppppppppppppppp
 """

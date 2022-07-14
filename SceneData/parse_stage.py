@@ -7,6 +7,7 @@ from Entity.Door import Door
 from Entity.KillPlatform import KillPlatform
 from Entity.JumpPlatform import JumpPlatform
 from Item.JumpItem import JumpItem
+from Entity.Goal import Goal
 from Entity.Cannon import Cannon
 from constants import COLORS, UNITSIZE
 from Entity.Platform import Platform
@@ -17,12 +18,13 @@ TOKENS: Final[Dict[str, str]] = {
     "CheckPoint": "c",
     "JumpItem": "j",
     "JumpPlatform": "J",
+    "Goal": "d",
     "SpawnPoint": "s",
     "Cannon": "g"
 }
 
 
-def parse_stage(s: str) -> Callable[[], Tuple[pg.sprite.Group, pg.Rect, Vector2]]:
+def parse_stage(s: str, _id: Tuple[int, int]) -> Callable[[], Tuple[pg.sprite.Group, pg.Rect, Vector2]]:
     m = [list(l) for l in s.strip().split('\n')]
     
     assert len(m) > 0
@@ -58,6 +60,9 @@ def parse_stage(s: str) -> Callable[[], Tuple[pg.sprite.Group, pg.Rect, Vector2]
             
             if m[i][j] == TOKENS["JumpItem"]:
                 entities.add(JumpItem(size / 2, position - Vector2(-size.x, size.y) / 4))
+
+            if m[i][j] == TOKENS["Goal"]:
+                entities.add(Goal(size, position, _id))
 
             if m[i][j] == TOKENS["Cannon"]:
                 entities.add(Cannon(size, position))

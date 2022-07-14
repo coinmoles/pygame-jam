@@ -2,11 +2,11 @@ from errno import EEXIST
 import imp
 from typing import Tuple
 import pygame as pg
-# from SceneData.chapter1 import chapter1, main_menu, stages
 from SceneData.chapter_menu.chapter1 import chapter1
 from Scene.ChapterScene import ChapterScene
 from constants import *
 from Scene.GameScene import GameScene
+from SceneData.parse_id import parse_id
 from globals import GLOBALS
 import sys
 
@@ -15,8 +15,7 @@ class Game:
     def __init__(self):
         pg.init()
         GLOBALS.set_screen(pg.display.set_mode((SCREEN.width, SCREEN.height), 0, 32))
-        # self.currentScene = GameScene(self.screen, chapter1[0])
-        self.current_scene = ChapterScene(chapter1, (1, 1))
+        self.current_scene = ChapterScene(chapter1, (0, 0))
         self.clock = pg.time.Clock()
 
     def run(self):
@@ -39,9 +38,11 @@ class Game:
         elif event.type == pg.KEYDOWN:
             if event.key == pg.K_ESCAPE:
                 pass
+
         elif event.type == CHANGE_SCENE:
-            if event.next_scene is None:
+            if event.next_scene_id is None:
                 pg.event.post(pg.event.Event(pg.QUIT))
             else:
                 self.current_scene.scene_end()
-                self.current_scene = event.next_scene
+                self.current_scene = parse_id(*event.next_scene_id)
+
