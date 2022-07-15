@@ -7,5 +7,5 @@ from typing import List
 
 class Potal(Entity):
     def __init__(self, pos: Vector2, sprites: List[pg.Surface], potal_type):
-        super().__init__(pos, sprites)
+        super().__init__(pos, sprites, 1)
         self.potal_type = potal_type

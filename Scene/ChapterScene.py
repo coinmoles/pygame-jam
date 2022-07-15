@@ -22,8 +22,7 @@ class ChapterScene(GameScene):
 
     def open_door(self):
         hits = pg.sprite.spritecollide(self.player, self.collidables, False)
-
-        assert len(hits) <= 1
+        
         if len(hits) == 0:
             return
 

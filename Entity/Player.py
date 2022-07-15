@@ -1,27 +1,29 @@
 from Entity.Corpse import Corpse
 from Entity.Entity import Entity
-from Entity.Platform import Platform
-from constants import COLORS, SCREEN
+from constants import FPS, UNITSIZE
 from pygame.math import Vector2
 import pygame as pg
-from constants import UNITSIZE, COLORS
-from typing import Callable, Union
+from typing import Callable
 
 GROUND_ACC = 1.0
 AIR_ACC = 0.3
 GROUND_FRIC = -0.15
 AIR_FRIC = -0.05
 
+P1_WALK = [
+    "p1_walk01", "p1_walk02", "p1_walk03", "p1_walk04", "p1_walk05", 
+    "p1_walk06", "p1_walk07", "p1_walk08", "p1_walk09", "p1_walk10", "p1_walk11"
+]
+
 
 class Player(Entity):
     def __init__(self, pos: Vector2):
-        super().__init__(pos, [pg.Surface((100, 100))])
-        # self.set_color(COLORS["yellow"]["300"])
+        super().__init__(pos, P1_WALK, FPS // 10)
         self.collide_check = False
         self.passable = True
 
         self.spawn_point = Vector2(30, 30)
-        self.ability: Callable[[], Corpse] = lambda size, c_pos: Corpse(c_pos, [pg.Surface((100, 100))])
+        self.ability: Callable[[], Corpse] = lambda size, c_pos: Corpse(c_pos)
         self.prev_rect = self.rect.copy()
 
         self.grounded = True
@@ -46,21 +48,33 @@ class Player(Entity):
         if self.grounded:
             self.vel.y = -30
 
-    def update(self, camera_base: Vector2, timer: int):
+    def update_active(self, timer: int):
         self.prev_rect = self.rect.copy()
-
+        
         if self.grounded:
             self.acc += self.vel * GROUND_FRIC
         else:
             self.acc += self.vel * AIR_FRIC
 
-        super().update(camera_base, timer)
+        super().update_active(timer)
 
     def check_active(self, camera_base):
         return
 
     def spawn_corpse(self):
         return self.ability(self.rect.size, self.pos)
+
+    def set_pos(self, pos: Vector2):
+        self.pos = pos
+        self.rect = pg.rect.Rect(self.pos, (UNITSIZE, UNITSIZE))
+
+    def set_x(self, x: int):
+        self.pos.x = x
+        self.rect = pg.rect.Rect(self.pos, (UNITSIZE, UNITSIZE))
+
+    def set_y(self, y: int):
+        self.pos.y = y
+        self.rect = pg.rect.Rect(self.pos, (UNITSIZE, UNITSIZE))
 
     def set_ability(self, ability: Callable[[Vector2, Vector2], Entity]):
         self.ability = ability

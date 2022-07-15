@@ -51,19 +51,19 @@ def parse_stage(s: str, _id: Tuple[int, int]) -> Callable[[], Tuple[pg.sprite.Gr
                     entities.add(GrassPlatform(position, True))
 
             if m[i][j] == TOKENS["KillPlatform"]:
-                entities.add(KillPlatform(position, [GLOBALS.images["grassCenter"]]))
+                entities.add(KillPlatform(position))
 
             if m[i][j] == TOKENS["JumpPlatform"]:
-                entities.add(JumpPlatform(position, [GLOBALS.images["grassCenter"]]))
+                entities.add(JumpPlatform(position))
 
             if m[i][j] == TOKENS["JumpItem"]:
-                entities.add(JumpItem(position, [GLOBALS.images["grassCenter"]]))
+                entities.add(JumpItem(position))
 
             if m[i][j] == TOKENS["CheckPoint"]:
                 entities.add(CheckPoint(position))
             
             if m[i][j] == TOKENS["JumpItem"]:
-                entities.add(JumpItem(position, [GLOBALS.images["grassCenter"]]))
+                entities.add(JumpItem(position))
 
             if m[i][j] == TOKENS["Goal"]:
                 entities.add(Goal(position, _id))
@@ -72,7 +72,6 @@ def parse_stage(s: str, _id: Tuple[int, int]) -> Callable[[], Tuple[pg.sprite.Gr
                 entities.add(Cannon(position, [GLOBALS.images["grassCenter"]]))
 
             if m[i][j] == TOKENS["SpawnPoint"]:
-                print(i, j, position)
                 player_spawn = position
 
     def stage():

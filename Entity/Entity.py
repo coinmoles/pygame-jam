@@ -1,13 +1,12 @@
 import pygame as pg
 from pygame.math import Vector2
-from pygame.color import Color
 from globals import GLOBALS
 from constants import SCREEN, DESPAWN, UNITSIZE
 from typing import List
 
 
 class Entity(pg.sprite.Sprite):
-    def __init__(self, pos: Vector2, sprites: List[pg.Surface]):
+    def __init__(self, pos: Vector2, sprites: List[str], freq: int):
         super().__init__()
         assert len(sprites) >= 1
 
@@ -18,11 +17,15 @@ class Entity(pg.sprite.Sprite):
         self.sprites = sprites
         self.sprites_len = len(sprites)
         self.sprites_start = 0
+        self.sprite_index = 0
 
-        self.surf = sprites[0]
-        self.rect = self.surf.get_rect(topleft=pos)
+        self.surf = GLOBALS.images[sprites[0]]
+        self.rect = GLOBALS.image_rect[sprites[0]]
+        self.drect = self.surf.get_rect()
+        self.freq = freq
 
-        self.pos = Vector2(pos)
+        self.pos = Vector2(0, 0)
+        self.set_pos(pos)
         self.vel = Vector2(0, 0)
         self.acc = Vector2(0, 0)
 
@@ -30,11 +33,14 @@ class Entity(pg.sprite.Sprite):
         if self.active:
             self.update_active(timer)
         self.check_active(camera_base)
+        
 
     def update_active(self, timer):
+        self.sprite_index = ((timer - self.sprites_start) // self.freq) % self.sprites_len
+        self.surf = GLOBALS.images[self.sprites[self.sprite_index]]
+        
         self.vel += self.acc
-        self.pos += self.vel + 0.5 * self.acc
-        self.rect.topleft = self.pos
+        self.set_pos(self.pos + self.vel + 0.5 * self.acc)
 
     def collide_player(self, player, side):
         pass
@@ -50,15 +56,15 @@ class Entity(pg.sprite.Sprite):
 
     def set_pos(self, pos: Vector2):
         self.pos = pos
-        self.rect.topleft = self.pos
+        self.rect = GLOBALS.image_rect[self.sprites[self.sprite_index]].move(self.pos)
 
     def set_x(self, x: int):
         self.pos.x = x
-        self.rect.topleft = self.pos
+        self.rect = GLOBALS.image_rect[self.sprites[self.sprite_index]].move(self.pos)
 
     def set_y(self, y: int):
         self.pos.y = y
-        self.rect.topleft = self.pos
+        self.rect = GLOBALS.image_rect[self.sprites[self.sprite_index]].move(self.pos)
 
     def set_sprites(self, sprites: List[pg.Surface], timer: int):
         self.sprites = sprites
@@ -69,5 +75,4 @@ class Entity(pg.sprite.Sprite):
         pg.event.post(pg.event.Event(DESPAWN, entity=self))
 
     def draw(self, camera_base, timer: int):
-        self.surf = self.sprites[(timer - self.sprites_start) % self.sprites_len]
-        GLOBALS.screen.blit(self.surf, self.rect.move(-camera_base))
+        GLOBALS.screen.blit(self.surf, self.drect.move(self.pos - camera_base))

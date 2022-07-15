@@ -5,7 +5,7 @@ from Scene.Scene import Scene
 from SceneData.parse_stage import parse_stage
 from Entity.Entity import Entity
 from Entity.Player import Player
-from constants import SCREEN, CAMERA_RECT, SET_SPAWN, DESPAWN, SPAWN
+from constants import SCREEN, CAMERA_RECT, SET_SPAWN, DESPAWN, SPAWN, UNITSIZE
 from helper.determine_side import determine_side
 from collections import deque
 from typing import Deque
@@ -78,6 +78,7 @@ class GameScene(Scene):
             for (entity, side) in zip(hits, sides):
                 if entity.passable:
                     continue
+
                 if side == "top" and (min_top is None or entity.rect.top < min_top):
                     min_top = entity.rect.top
                 elif side == "bottom" and (max_bottom is None or entity.rect.bottom > max_bottom):
@@ -88,11 +89,11 @@ class GameScene(Scene):
                     max_right = entity.rect.right
 
             if min_top is not None:
-                self.player.set_y(min_top - self.player.rect.height)
+                self.player.set_y(min_top - UNITSIZE)
                 self.player.vel.y = 0
                 self.player.grounded = True
             if min_left is not None:
-                self.player.set_x(min_left - self.player.rect.width - 1)
+                self.player.set_x(min_left - UNITSIZE - 1)
                 self.player.vel.x = 0
             if max_right is not None:
                 self.player.set_x(max_right)
@@ -154,7 +155,6 @@ class GameScene(Scene):
                 corpse = self.corpses.popleft()
                 corpse.despawn()
 
-            print(self.player_spawn)
             self.player = Player(self.player_spawn)
             self.spawn_entity(self.player)
 
