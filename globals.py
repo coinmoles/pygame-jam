@@ -21,7 +21,14 @@ class GameGlobals:
                 if not name.endswith('.png'):
                     continue
                 image_name = os.path.splitext(name)[0]
-                image = pg.transform.scale(pg.image.load(os.path.join(subdir, name)).convert_alpha(), (UNITSIZE, UNITSIZE))
+                image = pg.image.load(os.path.join(subdir, name)).convert_alpha()
+                if subdir == "./assets/images\p1":
+                    if image_name == "p1_stand" or image_name == "p1_jump":
+                        image = pg.transform.scale(image, (UNITSIZE * 2 / 3, UNITSIZE))
+                    else:
+                        image = pg.transform.scale(image, (UNITSIZE * 2 / 3 * 1.05, UNITSIZE * 1.05))
+                else:
+                    image = pg.transform.scale(image, (UNITSIZE, UNITSIZE))
                 self.images[image_name] = image
                 self.image_rect[image_name] = pg.mask.from_surface(image).get_bounding_rects()[0]
         

@@ -92,8 +92,11 @@ class GameScene(Scene):
                 self.player.set_y(min_top - UNITSIZE)
                 self.player.vel.y = 0
                 self.player.grounded = True
+            else:
+                self.player.grounded = False
+            
             if min_left is not None:
-                self.player.set_x(min_left - UNITSIZE - 1)
+                self.player.set_x(min_left - UNITSIZE * 2 / 3 - 1)
                 self.player.vel.x = 0
             if max_right is not None:
                 self.player.set_x(max_right)
@@ -104,7 +107,6 @@ class GameScene(Scene):
 
             for (entity, side) in zip(hits, sides):
                 entity.collide_player(self.player, side)
-
         else:
             self.player.grounded = False
 

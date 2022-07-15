@@ -1,3 +1,4 @@
+from math import pi
 from typing import Callable, Dict, Final, Tuple
 
 import pygame as pg
@@ -5,7 +6,7 @@ from pygame.math import Vector2
 from Entity.CheckPoint import CheckPoint
 from Entity.Door import Door
 from Entity.GrassPlatform import GrassPlatform
-from Entity.KillPlatform import KillPlatform
+from Entity.Spike import Spike
 from Entity.JumpPlatform import JumpPlatform
 from Entity.Item.JumpItem import JumpItem
 from Entity.Goal import Goal
@@ -16,7 +17,7 @@ from globals import GLOBALS
 
 TOKENS: Final[Dict[str, str]] = {
     "GrassPlatform": "p",
-    "KillPlatform": "k",
+    "Spike": "k",
     "CheckPoint": "c",
     "JumpItem": "j",
     "JumpPlatform": "J",
@@ -50,8 +51,16 @@ def parse_stage(s: str, _id: Tuple[int, int]) -> Callable[[], Tuple[pg.sprite.Gr
                 else:
                     entities.add(GrassPlatform(position, True))
 
-            if m[i][j] == TOKENS["KillPlatform"]:
-                entities.add(KillPlatform(position))
+            if m[i][j] == TOKENS["Spike"]:
+                if i + 1 < height and m[i + 1][j] == TOKENS["GrassPlatform"]:
+                    entities.add(Spike(position, 0))
+                elif j - 1 >= 0 and m[i][j - 1] == TOKENS["GrassPlatform"]:
+                    entities.add(Spike(position, 1))
+                elif j + 1 < width and m[i][j + 1] == TOKENS["GrassPlatform"]:
+                    entities.add(Spike(position, 3))
+                else:
+                    entities.add(Spike(position, 2))
+                 
 
             if m[i][j] == TOKENS["JumpPlatform"]:
                 entities.add(JumpPlatform(position))
@@ -69,7 +78,7 @@ def parse_stage(s: str, _id: Tuple[int, int]) -> Callable[[], Tuple[pg.sprite.Gr
                 entities.add(Goal(position, _id))
 
             if m[i][j] == TOKENS["Cannon"]:
-                entities.add(Cannon(position, [GLOBALS.images["grassCenter"]]))
+                entities.add(Cannon(position, ["grassCenter"]))
 
             if m[i][j] == TOKENS["SpawnPoint"]:
                 player_spawn = position
