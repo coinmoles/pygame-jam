@@ -1,12 +1,13 @@
 stage1_1 = """
-.............................................
-.............................................
-...........................c.................
-........................ppppppp...........d..
-........................ppppppp.........ppppp
-..................c...J.ppppppp........kppppp
-.................pppppppppppppp........kppppp
-.s........c......pppppppppppppp........kppppp
-ppppkkkkkpppppkkkppppppppppppppkkkkkkkkkppppp
-ppppppppppppppppppppppppppppppppppppppppppppp
+............................................
+............................................
+...........................c................
+........................ppppppp........s.d..
+........................ppppppp........ppppp
+..................c...J.ppppppp........ppppp
+.................pppppppppppppp.......kppppp
+................ppppppppppppppp.......kppppp
+.c..kkkkk.c...kkppppppppppppppp.......kppppp
+pppppppppppppppppppppppppppppppkkkkkkkkppppp
+pppppppppppppppppppppppppppppppppppppppppppp
 """

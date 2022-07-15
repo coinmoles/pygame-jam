@@ -1,6 +1,4 @@
 from typing import Tuple
-from Entity.Door import Door
-from Scene.Scene import Scene
 from Scene.GameScene import GameScene
 from SceneData.parse_menu import parse_menu
 import pygame as pg
@@ -11,7 +9,7 @@ class ChapterScene(GameScene):
     def __init__(self, stage: str, _id: Tuple[int, int]):
         super().__init__(stage, _id)
         self.stage = parse_menu(stage)
-        self.reset_stage()
+        self.set_stage(True)
 
     def handle_event(self, event: pg.event.Event):
         if event.type == pg.KEYDOWN:

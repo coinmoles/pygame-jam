@@ -5,7 +5,7 @@ from Scene.Scene import Scene
 from SceneData.parse_stage import parse_stage
 from Entity.Entity import Entity
 from Entity.Player import Player
-from constants import SCREEN, CAMERA_RECT, SET_SPAWN, DESPAWN, SPAWN, UNITSIZE
+from constants import PLAYER_DEATH, SCREEN, CAMERA_RECT, SET_SPAWN, DESPAWN, SPAWN, UNITSIZE
 from helper.determine_side import determine_side
 from collections import deque
 from typing import Deque
@@ -20,15 +20,10 @@ class GameScene(Scene):
         self.corpses: Deque[pg.sprite.Sprite] = deque()
         self.stage_rect = pg.Rect(0, 0, 0, 0)
         self.player_spawn = Vector2(0, 0)
-        self.stage = parse_stage(stage, _id)
-
-        self.add_stage()
+        self.stage = lambda : (pg.sprite.Group(), pg.Rect(0, 0, 0, 0), Vector2(0, 0))
 
         self.player = Player(self.player_spawn)
         self.stage_rect = pg.rect.Rect(0, 0, SCREEN.width, SCREEN.height)
-        
-        self.add_stage()
-        self.spawn_entity(self.player)
 
     def update(self):
         # 플레이어 이동
@@ -47,13 +42,16 @@ class GameScene(Scene):
 
     def handle_event(self, event: pg.event.Event):
         super().handle_event(event)
-        if event.type == pg.KEYDOWN:
-            if event.key == pg.K_SPACE:
-                self.player.jump()
-            if event.key == pg.K_q:
-                self.player.despawn()
-            if event.key == pg.K_w:
-                self.reset_stage()
+        if self.player.active:
+            if event.type == pg.KEYDOWN:
+                if event.key == pg.K_SPACE:
+                    if self.player.active:
+                        self.player.jump()
+                if event.key == pg.K_q:
+                    self.player.despawn()
+                if event.key == pg.K_w:
+                    self.set_stage(False)
+        
         if event.type == SET_SPAWN:
             self.player_spawn = event.spawn
 
@@ -64,6 +62,10 @@ class GameScene(Scene):
         if event.type == DESPAWN:
             entity: Entity = event.entity
             self.despawn_entity(entity)
+
+        if event.type == PLAYER_DEATH:
+            if self.player.active:
+                self.player_death() 
 
     def handle_collision(self):
         hits = pg.sprite.spritecollide(self.player, self.collidables, False)
@@ -162,16 +164,15 @@ class GameScene(Scene):
 
         entity.kill()
 
-    def add_stage(self):
-        entities, stage_rect, player_spawn = self.stage()
-        
-        for entity in entities:
-            self.spawn_entity(entity)
+    def player_death(self):        
+        self.player.active = False
+        self.player.dead = True
+        self.player.vel = Vector2(0, 0)
+        self.player.acc = Vector2(0, 0)
+        self.player.set_animation("death")
+        pg.time.set_timer(pg.event.Event(DESPAWN, entity=self.player), 500, 1)
 
-        self.stage_rect = stage_rect
-        self.player_spawn = player_spawn
-
-    def reset_stage(self):
+    def set_stage(self, first: bool):
         self.entityList = pg.sprite.Group()
         self.collidables = pg.sprite.Group()
         self.corpses: Deque[pg.sprite.Sprite] = deque()
@@ -179,5 +180,8 @@ class GameScene(Scene):
         entities, stage_rect, player_spawn = self.stage()
         for entity in entities:
             self.spawn_entity(entity)
+        if first:
+            self.stage_rect = stage_rect
+            self.player_spawn = player_spawn
         self.player = Player(self.player_spawn)
         self.spawn_entity(self.player)

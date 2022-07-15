@@ -50,13 +50,7 @@ class Entity(pg.sprite.Sprite):
         pass
 
     def check_active(self, camera_base):
-        rel_rect = self.rect.move(-camera_base)
-
-        if rel_rect.left > SCREEN.width + UNITSIZE or rel_rect.right < -UNITSIZE \
-                or rel_rect.top > SCREEN.height + UNITSIZE or rel_rect.bottom < -UNITSIZE:
-            self.active = False
-        else:
-            self.active = True
+        pass
 
     def set_pos(self, pos: Vector2):
         self.pos = pos

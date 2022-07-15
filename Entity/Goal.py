@@ -1,7 +1,8 @@
 from pygame import Vector2
 from Entity.Entity import Entity
 import pygame as pg
-from constants import CHANGE_SCENE, FPS
+
+from constants import FPS, STAGE_CLEAR
 
 
 class Goal(Entity):
@@ -13,5 +14,10 @@ class Goal(Entity):
         self.id = _id
 
     def collide_player(self, player, side):
+        if not self.active:
+            return
         super().collide_player(player, side)
-        pg.event.post(pg.event.Event(CHANGE_SCENE, next_scene_id=(self.id[0], 0)))
+
+        if player.grounded:
+            self.active = False
+            pg.event.post(pg.event.Event(STAGE_CLEAR))

@@ -5,6 +5,8 @@ from pygame.math import Vector2
 import pygame as pg
 from typing import Callable, List
 
+from globals import GLOBALS
+
 GROUND_ACC = 1.0
 AIR_ACC = 0.3
 GROUND_FRIC = -0.15
@@ -13,6 +15,10 @@ AIR_FRIC = -0.05
 P1_WALK = [
     "p1_walk01", "p1_walk02", "p1_walk03", "p1_walk04", "p1_walk05", 
     "p1_walk06", "p1_walk07", "p1_walk08", "p1_walk09", "p1_walk10", "p1_walk11"
+]
+
+P1_DEATH = [
+    "p1_hurt"
 ]
 
 
@@ -28,12 +34,20 @@ class Player(Entity):
         self.drect = pg.rect.Rect(0, 0, UNITSIZE * 2 / 3, UNITSIZE)
 
         self.grounded = True
+        self.dead = False
         self.last_direction = "r"
 
     def move(self):
-        pressed_keys = pg.key.get_pressed()
-
+        if self.dead:
+            self.acc = Vector2(0, 0)
+            return
+        
         self.acc = Vector2(0, 0.8)
+
+        if not self.active:
+            return
+        
+        pressed_keys = pg.key.get_pressed()
 
         if self.grounded:
             if pressed_keys[pg.K_LEFT]:
@@ -56,7 +70,7 @@ class Player(Entity):
                 self.acc.x = AIR_ACC
 
     def jump(self):
-        if self.grounded:
+        if self.grounded or not self.active:
             self.vel.y = -30
             self.grounded = False
             if self.last_direction == "r":
@@ -64,7 +78,7 @@ class Player(Entity):
             else:
                 self.set_animation("jumpLeft")
 
-    def update_active(self, timer: int):
+    def update(self, camera_base: Vector2, timer: int):
         self.prev_rect = self.rect.copy()
         
         if self.grounded:
@@ -72,7 +86,16 @@ class Player(Entity):
         else:
             self.acc += self.vel * AIR_FRIC
 
-        super().update_active(timer)
+        self.sprite_index = ((timer - self.sprites_start) // self.freq) % self.sprites_len
+        self.surf = GLOBALS.images[self.sprites[self.sprite_index]]
+        if self.flip[0] or self.flip[0]:
+            self.surf = pg.transform.flip(self.surf, self.flip[0], self.flip[1])
+        
+        self.vel += self.acc
+        self.set_pos(self.pos + self.vel + 0.5 * self.acc)
+
+    def update_active(self, timer: int):
+        pass
 
     def check_active(self, camera_base):
         return
@@ -111,9 +134,8 @@ class Player(Entity):
         elif (animation_key == "walkLeft"):
             self.set_sprites(P1_WALK, FPS // 10)
             self.flip = (True, False)
-
-    def set_sprites(self, sprites: List[str], freq: int):
-        return super().set_sprites(sprites, freq)
+        elif (animation_key == "death"):
+            self.set_sprites(P1_DEATH, 1)
 
     def set_ability(self, ability: Callable[[Vector2, Vector2], Entity]):
         self.ability = ability

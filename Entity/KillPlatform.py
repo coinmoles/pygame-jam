@@ -1,6 +1,8 @@
+import pygame as pg
 from Entity.Platform import Platform
 from pygame.math import Vector2
 from typing import List
+from constants import PLAYER_DEATH
 
 
 class KillPlatform(Platform):
@@ -8,4 +10,4 @@ class KillPlatform(Platform):
         super().__init__(pos, sprites, 1)
 
     def collide_player(self, player, side):
-        player.despawn()
+        pg.event.post(pg.event.Event(PLAYER_DEATH))

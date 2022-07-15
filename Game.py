@@ -1,11 +1,7 @@
-from errno import EEXIST
-import imp
-from typing import Tuple
 import pygame as pg
 from SceneData.main_menu import main_menu
 from Scene.ChapterScene import ChapterScene
 from constants import *
-from Scene.GameScene import GameScene
 from SceneData.parse_id import parse_id
 from globals import GLOBALS
 import sys
@@ -31,14 +27,10 @@ class Game:
             pg.display.update()
             self.clock.tick(FPS)
 
-# pygame Event 이용해서 다시 구현해야됨
     def handle_event(self, event: pg.event.Event):
         if event.type == pg.QUIT:
             pg.quit()
             sys.exit()
-        elif event.type == pg.KEYDOWN:
-            if event.key == pg.K_ESCAPE:
-                pass
 
         elif event.type == CHANGE_SCENE:
             if event.next_scene_id is None:

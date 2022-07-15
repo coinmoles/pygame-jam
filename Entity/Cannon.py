@@ -2,7 +2,7 @@ import pygame as pg
 from Entity.Platform import Platform
 from Entity.Fireball import Fireball
 from pygame.math import Vector2
-from constants import SPAWN, FPS
+from constants import SCREEN, SPAWN, FPS, UNITSIZE
 from typing import List
 
 
@@ -18,3 +18,12 @@ class Cannon(Platform):
             pg.event.post(pg.event.Event(
                 SPAWN, entity=Fireball(self.pos - Vector2(self.rect.width, 0), Vector2(-5, 0))
             ))
+
+    def check_active(self, camera_base):
+        rel_rect = self.rect.move(-camera_base)
+
+        if rel_rect.left > SCREEN.width + UNITSIZE or rel_rect.right < -UNITSIZE \
+                or rel_rect.top > SCREEN.height + UNITSIZE or rel_rect.bottom < -UNITSIZE:
+            self.active = False
+        else:
+            self.active = True

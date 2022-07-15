@@ -7,8 +7,8 @@ pppppppppppppppppp...........d..
 p.....ppppppppp........kkkkkkkkk
 p...............J...J..ppppppppp
 .......................ppppppppp
-..................J....ppppppppp
-....pppp...............ppppppppp
+......pppp........J....ppppppppp
+.......................ppppppppp
 ppppppk.....c...J......ppppppppp
 ppppppk...kppppppppppppppppppppp
 ppppppk...kppppppppppppppppppppp
