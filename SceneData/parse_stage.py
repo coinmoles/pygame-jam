@@ -4,6 +4,7 @@ import pygame as pg
 from pygame.math import Vector2
 from Entity.CheckPoint import CheckPoint
 from Entity.Door import Door
+from Entity.GrassPlatform import GrassPlatform
 from Entity.KillPlatform import KillPlatform
 from Entity.JumpPlatform import JumpPlatform
 from Entity.Item.JumpItem import JumpItem
@@ -11,9 +12,10 @@ from Entity.Goal import Goal
 from Entity.Cannon import Cannon
 from constants import COLORS, UNITSIZE
 from Entity.Platform import Platform
+from globals import GLOBALS
 
 TOKENS: Final[Dict[str, str]] = {
-    "Platform": "p",
+    "GrassPlatform": "p",
     "KillPlatform": "k",
     "CheckPoint": "c",
     "JumpItem": "j",
@@ -40,34 +42,37 @@ def parse_stage(s: str, _id: Tuple[int, int]) -> Callable[[], Tuple[pg.sprite.Gr
 
     for i in range(height):
         for j in range(width):
-            size = Vector2(UNITSIZE, UNITSIZE)
-            position = Vector2(UNITSIZE * j, UNITSIZE * i + UNITSIZE)
-
-            if m[i][j] == TOKENS["Platform"]:
-                entities.add(Platform(size, position))
+            position = Vector2(UNITSIZE * j, UNITSIZE * i)
+            
+            if m[i][j] == TOKENS["GrassPlatform"]:
+                if i - 1 >= 0 and m[i-1][j] == TOKENS["GrassPlatform"]:
+                    entities.add(GrassPlatform(position, False))
+                else:
+                    entities.add(GrassPlatform(position, True))
 
             if m[i][j] == TOKENS["KillPlatform"]:
-                entities.add(KillPlatform(size, position))
+                entities.add(KillPlatform(position, [GLOBALS.images["grassCenter"]]))
 
             if m[i][j] == TOKENS["JumpPlatform"]:
-                entities.add(JumpPlatform(size, position))
+                entities.add(JumpPlatform(position, [GLOBALS.images["grassCenter"]]))
 
             if m[i][j] == TOKENS["JumpItem"]:
-                entities.add(JumpItem(size / 2, position - Vector2(-size.x, size.y) / 4))
+                entities.add(JumpItem(position, [GLOBALS.images["grassCenter"]]))
 
             if m[i][j] == TOKENS["CheckPoint"]:
-                entities.add(CheckPoint(size, position))
+                entities.add(CheckPoint(position))
             
             if m[i][j] == TOKENS["JumpItem"]:
-                entities.add(JumpItem(size / 2, position - Vector2(-size.x, size.y) / 4))
+                entities.add(JumpItem(position, [GLOBALS.images["grassCenter"]]))
 
             if m[i][j] == TOKENS["Goal"]:
-                entities.add(Goal(size, position, _id))
+                entities.add(Goal(position, _id))
 
             if m[i][j] == TOKENS["Cannon"]:
-                entities.add(Cannon(size, position))
+                entities.add(Cannon(position, [GLOBALS.images["grassCenter"]]))
 
             if m[i][j] == TOKENS["SpawnPoint"]:
+                print(i, j, position)
                 player_spawn = position
 
     def stage():

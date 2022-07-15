@@ -24,6 +24,8 @@ class ChapterScene(GameScene):
         hits = pg.sprite.spritecollide(self.player, self.collidables, False)
 
         assert len(hits) <= 1
+        if len(hits) == 0:
+            return
 
         entity = hits[0]
         if self.id[0] == 0:

@@ -1,12 +1,13 @@
+import pygame as pg
 from Entity.Entity import Entity
 from pygame.math import Vector2
 import math
-from typing import Callable
+from typing import Callable, List
 
 
 class Item(Entity):
-    def __init__(self, size: Vector2, pos: Vector2):
-        super().__init__(size, pos)
+    def __init__(self, pos: Vector2, sprites: List[pg.Surface]):
+        super().__init__(pos, sprites)
         self.collide_check = True
         self.passable = True
         self.timer = 0

@@ -2,18 +2,25 @@ import pygame as pg
 from pygame.math import Vector2
 from pygame.color import Color
 from globals import GLOBALS
-from constants import SCREEN, DESPAWN, UNITSIZE, COLORS
+from constants import SCREEN, DESPAWN, UNITSIZE
+from typing import List
 
 
 class Entity(pg.sprite.Sprite):
-    def __init__(self, size: Vector2, pos: Vector2):
+    def __init__(self, pos: Vector2, sprites: List[pg.Surface]):
         super().__init__()
+        assert len(sprites) >= 1
+
         self.active = True
         self.collide_check = False
         self.passable = False
 
-        self.surf = pg.Surface(size)
-        self.rect = self.surf.get_rect(bottomleft=pos)
+        self.sprites = sprites
+        self.sprites_len = len(sprites)
+        self.sprites_start = 0
+
+        self.surf = sprites[0]
+        self.rect = self.surf.get_rect(topleft=pos)
 
         self.pos = Vector2(pos)
         self.vel = Vector2(0, 0)
@@ -27,7 +34,7 @@ class Entity(pg.sprite.Sprite):
     def update_active(self, timer):
         self.vel += self.acc
         self.pos += self.vel + 0.5 * self.acc
-        self.rect.bottomleft = self.pos
+        self.rect.topleft = self.pos
 
     def collide_player(self, player, side):
         pass
@@ -43,21 +50,24 @@ class Entity(pg.sprite.Sprite):
 
     def set_pos(self, pos: Vector2):
         self.pos = pos
-        self.rect.bottomleft = self.pos
+        self.rect.topleft = self.pos
 
     def set_x(self, x: int):
         self.pos.x = x
-        self.rect.bottomleft = self.pos
+        self.rect.topleft = self.pos
 
     def set_y(self, y: int):
         self.pos.y = y
-        self.rect.bottomleft = self.pos
+        self.rect.topleft = self.pos
 
-    def set_color(self, color: Color):
-        self.surf.fill(color)
+    def set_sprites(self, sprites: List[pg.Surface], timer: int):
+        self.sprites = sprites
+        self.sprites_len = len(sprites)
+        self.sprites_start = 0
 
     def despawn(self):
         pg.event.post(pg.event.Event(DESPAWN, entity=self))
 
-    def draw(self, camera_base):
+    def draw(self, camera_base, timer: int):
+        self.surf = self.sprites[(timer - self.sprites_start) % self.sprites_len]
         GLOBALS.screen.blit(self.surf, self.rect.move(-camera_base))

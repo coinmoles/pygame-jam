@@ -15,6 +15,7 @@ class Game:
     def __init__(self):
         pg.init()
         GLOBALS.set_screen(pg.display.set_mode((SCREEN.width, SCREEN.height), 0, 32))
+        GLOBALS.load_images()
         self.current_scene = ChapterScene(main_menu, (0, 0))
         self.clock = pg.time.Clock()
 

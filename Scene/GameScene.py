@@ -88,17 +88,17 @@ class GameScene(Scene):
                     max_right = entity.rect.right
 
             if min_top is not None:
-                self.player.set_y(min_top)
+                self.player.set_y(min_top - self.player.rect.height)
                 self.player.vel.y = 0
                 self.player.grounded = True
             if min_left is not None:
                 self.player.set_x(min_left - self.player.rect.width - 1)
                 self.player.vel.x = 0
             if max_right is not None:
-                self.player.set_x(max_right + 2)
+                self.player.set_x(max_right)
                 self.player.vel.x = 0
             if max_bottom is not None:
-                self.player.set_y(max_bottom + self.player.rect.height)
+                self.player.set_y(max_bottom)
                 self.player.vel.y = 0
 
             for (entity, side) in zip(hits, sides):
@@ -108,16 +108,16 @@ class GameScene(Scene):
             self.player.grounded = False
 
         if self.player.rect.right > self.stage_rect.width:
-            self.player.set_x(self.stage_rect.width - self.player.rect.width)
+            self.player.set_x(self.stage_rect.width)
         elif self.player.rect.left < 0:
             self.player.set_x(0)
 
         if self.player.rect.bottom > self.stage_rect.bottom:
             self.player.despawn()
         elif self.player.rect.top < 0:
-            self.player.set_y(self.player.rect.height)
+            self.player.set_y(0)
 
-        # if self.player.pos.y > 800:  # 조건 변경 필요
+        # if self.player.center.y > 800:  # 조건 변경 필요
         #     self.player.despawn()
 
     def move_camera(self):
@@ -154,11 +154,11 @@ class GameScene(Scene):
                 corpse = self.corpses.popleft()
                 corpse.despawn()
 
+            print(self.player_spawn)
             self.player = Player(self.player_spawn)
             self.spawn_entity(self.player)
 
-        self.entityList.remove(entity)
-        self.collidables.remove(entity)
+        entity.kill()
 
     def add_stage(self):
         entities, stage_rect, player_spawn = self.stage()

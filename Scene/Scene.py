@@ -22,7 +22,7 @@ class Scene:
         GLOBALS.screen.fill((255, 255, 255))
 
         for entity in self.entityList:
-            entity.draw(self.camera_base)
+            entity.draw(self.camera_base, self.timer)
 
         self.timer += 1
 
