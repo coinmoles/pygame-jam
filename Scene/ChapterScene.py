@@ -9,7 +9,7 @@ class ChapterScene(GameScene):
     def __init__(self, stage: str, _id: Tuple[int, int]):
         super().__init__(stage, _id)
         self.stage = parse_menu(stage)
-        self.set_stage(True)
+        self.set_stage()
 
     def handle_event(self, event: pg.event.Event):
         if event.type == pg.KEYDOWN:

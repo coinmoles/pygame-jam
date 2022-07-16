@@ -17,6 +17,7 @@ class GameScene(Scene):
     def __init__(self, stage: str, _id: Tuple[int, int]):
         super().__init__(_id)
         self.collidables = pg.sprite.Group()
+        self.despawned = pg.sprite.Group()
         self.corpses: Deque[pg.sprite.Sprite] = deque()
         self.stage_rect = pg.Rect(0, 0, 0, 0)
         self.player_spawn = Vector2(0, 0)
@@ -50,7 +51,7 @@ class GameScene(Scene):
                 if event.key == pg.K_q:
                     self.player.despawn()
                 if event.key == pg.K_w:
-                    self.set_stage(False)
+                    self.reset_stage()
         
         elif event.type == SET_SPAWN:
             self.player_spawn = event.spawn
@@ -161,11 +162,13 @@ class GameScene(Scene):
             self.camera_base.y = self.stage_rect.height - SCREEN.height
 
     def spawn_entity(self, entity: Entity):
+        print("spawn:", entity)
         self.entityList.add(entity)
         if entity.collide_check:
             self.collidables.add(entity)
 
     def despawn_entity(self, entity: Entity):
+        print("despawn:", entity)
         if entity == self.player:
             corpse = self.player.spawn_corpse()
             self.corpses.append(corpse)
@@ -178,7 +181,12 @@ class GameScene(Scene):
             self.player = Player(self.player_spawn)
             self.spawn_entity(self.player)
 
-        entity.kill()
+        if not (entity in self.corpses or isinstance(entity, Player)):
+            print("despawn added")
+            self.despawned.add(entity)
+        
+        self.collidables.remove(entity)
+        self.entityList.remove(entity)
 
     def player_death(self):        
         self.player.active = False
@@ -186,7 +194,7 @@ class GameScene(Scene):
         self.player.set_animation("death")
         pg.time.set_timer(pg.event.Event(DESPAWN, entity=self.player), 500, 1)
 
-    def set_stage(self, first: bool):
+    def set_stage(self):
         self.entityList = pg.sprite.Group()
         self.collidables = pg.sprite.Group()
         self.corpses: Deque[pg.sprite.Sprite] = deque()
@@ -194,8 +202,20 @@ class GameScene(Scene):
         entities, stage_rect, player_spawn = self.stage()
         for entity in entities:
             self.spawn_entity(entity)
-        if first:
-            self.stage_rect = stage_rect
-            self.player_spawn = player_spawn
+
+        self.stage_rect = stage_rect
+        self.player_spawn = player_spawn
+        self.player = Player(self.player_spawn)
+        self.spawn_entity(self.player)
+
+    def reset_stage(self):
+        for corpse in self.corpses:
+            self.despawn_entity(corpse)
+        
+        for entity in self.despawned:
+            self.spawn_entity(entity)
+            
+        self.collidables.remove(self.player)
+        self.entityList.remove(self.player)
         self.player = Player(self.player_spawn)
         self.spawn_entity(self.player)

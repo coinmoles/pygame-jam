@@ -13,11 +13,14 @@ class Goal(Entity):
         self.collide_check = True
         self.id = _id
 
+        self.checked = False
+
     def collide_player(self, player, side):
-        if not self.active:
+        if self.checked:
             return
         super().collide_player(player, side)
 
         if player.grounded:
-            self.active = False
+            self.checked = True
+            self.set_sprites(["flagGreen", "flagGreen2"], FPS // 5)
             pg.event.post(pg.event.Event(STAGE_CLEAR))

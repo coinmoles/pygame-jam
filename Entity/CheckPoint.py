@@ -9,7 +9,12 @@ class CheckPoint(Entity):
         super().__init__(pos, ["flagBlue", "flagBlue2"], FPS // 5)
         self.collide_check = True
         self.passable = True
+        self.checked = False
 
     def collide_player(self, player, side):
+        if self.checked:
+            return
+        
         pg.event.post(pg.event.Event(SET_SPAWN, spawn=self.pos))
-        self.despawn()
+        self.set_sprites(["flagGreen", "flagGreen2"], FPS // 5)
+        self.checked = True

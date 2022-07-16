@@ -12,7 +12,7 @@ class StageScene(GameScene):
     def __init__(self, stage: str, _id: Tuple[int, int]):
         super().__init__(stage, _id)
         self.stage = parse_stage(stage, _id)
-        self.set_stage(True)
+        self.set_stage()
 
     def handle_event(self, event: pg.event.Event):
         super().handle_event(event)
