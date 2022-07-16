@@ -31,14 +31,14 @@ class Entity(pg.sprite.Sprite):
 
         self.flip = (False, False)
 
-    def update(self, camera_base: Vector2, timer: int):
+    def update(self, camera_base: Vector2):
         if self.active:
-            self.update_active(timer)
+            self.update_active()
         self.check_active(camera_base)
         
 
-    def update_active(self, timer):
-        self.sprite_index = ((timer - self.sprites_start) // self.freq) % self.sprites_len
+    def update_active(self):
+        self.sprite_index = ((GLOBALS.timer - self.sprites_start) // self.freq) % self.sprites_len
         self.surf = GLOBALS.images[self.sprites[self.sprite_index]]
         if self.flip[0] or self.flip[0]:
             self.surf = pg.transform.flip(self.surf, self.flip[0], self.flip[1])
@@ -65,6 +65,7 @@ class Entity(pg.sprite.Sprite):
         self.rect = GLOBALS.image_rect[self.sprites[self.sprite_index]].move(self.pos)
 
     def set_sprites(self, sprites: List[str], freq:int):
+        self.sprites_start = GLOBALS.timer
         self.sprite_index = 0
         self.sprites = sprites
         self.sprites_len = len(sprites)
@@ -73,5 +74,5 @@ class Entity(pg.sprite.Sprite):
     def despawn(self):
         pg.event.post(pg.event.Event(DESPAWN, entity=self))
 
-    def draw(self, camera_base, timer: int):
+    def draw(self, camera_base):
         GLOBALS.screen.blit(self.surf, self.drect.move(self.pos - camera_base))

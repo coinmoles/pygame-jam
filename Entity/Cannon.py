@@ -5,6 +5,8 @@ from pygame.math import Vector2
 from constants import SCREEN, SPAWN, FPS, UNITSIZE
 from typing import List
 
+from globals import GLOBALS
+
 
 class Cannon(Platform):
     def __init__(self, pos: Vector2, sprites: List[str]):
@@ -14,8 +16,8 @@ class Cannon(Platform):
         self.passable = False
         self.item_id = 1
 
-    def update_active(self, timer: int):
-        if timer % (FPS * 5) == 0:
+    def update_active(self):
+        if GLOBALS.timer % (FPS * 5) == 0:
             pg.event.post(pg.event.Event(
                 SPAWN, entity=Fireball(self.pos - Vector2(self.rect.width, 0), Vector2(-5, 0))
             ))

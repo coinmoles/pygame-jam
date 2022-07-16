@@ -13,13 +13,11 @@ class Item(Entity):
         super().__init__(pos, sprites, freq)
         self.collide_check = True
         self.passable = True
-        self.timer = 0
         self.item_id = item_id
 
-    def update(self, camera_base: Vector2, timer: int):
-        self.vel = Vector2(0, math.sin(self.timer * math.pi / 20))
-        self.timer += 1
-        super().update(camera_base, timer)
+    def update(self, camera_base: Vector2):
+        self.vel = Vector2(0, math.sin(GLOBALS.timer * math.pi / 20))
+        super().update(camera_base, GLOBALS.timer)
 
     def collide_player(self, player, side):
         player.set_ability(self.ability_give())

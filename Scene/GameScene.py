@@ -33,7 +33,7 @@ class GameScene(Scene):
 
         # 엔티티 위치 확정
         for entity in self.entityList:
-            entity.update(self.camera_base, self.timer)
+            entity.update(self.camera_base)
         self.handle_collision()
 
         # 카메라 이동
@@ -81,9 +81,6 @@ class GameScene(Scene):
             self.player.active = True
             self.player.paused = False
             self.player.set_animation("stand")
-        
-        
-
 
     def handle_collision(self):
         hits = pg.sprite.spritecollide(self.player, self.collidables, False)

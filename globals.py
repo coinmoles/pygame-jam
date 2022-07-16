@@ -7,6 +7,7 @@ from constants import UNITSIZE
 
 class GameGlobals:
     def __init__(self):
+        self.timer = 0
         self.screen: Union[pg.Surface, None] = None
         self.images: Dict[str, pg.Surface] = {}
         self.image_rect: Dict[str, pg.Rect] = {}
@@ -15,6 +16,9 @@ class GameGlobals:
     def set_screen(self, screen: pg.Surface):
         self.screen = screen
 
+    def reset_timer(self):
+        self.timer = 0
+    
     def load_images(self):
         path = './assets/images'
         for subdir, dirs, file_names in os.walk(path):

@@ -63,7 +63,7 @@ ANIMS = {
 
 class Player(Entity):
     def __init__(self, pos: Vector2):
-        super().__init__(pos, P1_WALK, FPS // 10)
+        super().__init__(pos, P0_STAND, FPS // 10)
         self.collide_check = False
         self.passable = True
 
@@ -71,6 +71,8 @@ class Player(Entity):
         self.ability: Callable[[], Corpse] = lambda player: Corpse(player.pos - Vector2(UNITSIZE / 6, 0), player.flip)
         self.prev_rect = self.rect.copy()
         self.drect = pg.rect.Rect(0, 0, UNITSIZE * 2 / 3, UNITSIZE)
+
+        self.cur_animation = "stand"
 
         self.prev_transform = 0
         self.transform = 0
@@ -113,8 +115,8 @@ class Player(Entity):
             pg.mixer.Sound.play(GLOBALS.sfx_dict["Jump"])
             self.set_animation("jump")
 
-    def update(self, camera_base: Vector2, timer: int): 
-        self.sprite_index = ((timer - self.sprites_start) // self.freq) % self.sprites_len
+    def update(self, camera_base: Vector2): 
+        self.sprite_index = ((GLOBALS.timer - self.sprites_start) // self.freq) % self.sprites_len
         self.surf = GLOBALS.images[self.sprites[self.sprite_index]]
 
         if self.flip[0] or self.flip[0]:
@@ -133,7 +135,7 @@ class Player(Entity):
         self.vel += self.acc
         self.set_pos(self.pos + self.vel + 0.5 * self.acc)
 
-    def update_active(self, timer: int):
+    def update_active(self):
         pass
 
     def check_active(self, camera_base):
@@ -155,15 +157,18 @@ class Player(Entity):
         self.rect = pg.rect.Rect(self.pos, (UNITSIZE * 2 / 3 , UNITSIZE))
 
     def set_animation(self, animation_key: str):
+        if animation_key == self.cur_animation:
+            return
+        self.cur_animation = animation_key
+
         if animation_key == "stand":
             self.set_sprites(ANIMS[self.transform]["stand"], 1)
         elif animation_key == "walk":
             self.set_sprites(ANIMS[self.transform]["walk"], FPS // 10)
         elif animation_key == "jump":
             self.set_sprites(ANIMS[self.transform]["jump"], 1)
-        # TODO: reset animation on set_sprites (change timer to global)
         elif animation_key == "death":
-            self.set_sprites(ANIMS[self.transform]["death"], FPS // 3)
+            self.set_sprites(ANIMS[self.transform]["death"], FPS * 3 // 10)
         elif animation_key == "transform":
             self.set_sprites([ANIMS[self.prev_transform]["stand"][0], ANIMS[self.transform]["stand"][0]], FPS // 6)
     

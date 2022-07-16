@@ -11,12 +11,12 @@ class Scene:
         self.entityList: pg.sprite.Group = pg.sprite.Group()
 
         self.id: Tuple[int, int] = _id
-        self.timer = 0
 
         self.music_path = ""
         self.camera_base: Vector2 = Vector2(0, 0)
 
     def scene_start(self):
+        GLOBALS.reset_timer()
         pg.mixer.music.load(self.music_path)
         pg.mixer.music.play(-1, 0)
 
@@ -28,9 +28,9 @@ class Scene:
         GLOBALS.screen.fill((208, 244, 247))
 
         for entity in self.entityList:
-            entity.draw(self.camera_base, self.timer)
+            entity.draw(self.camera_base)
 
-        self.timer += 1
+        GLOBALS.timer += 1
     
     def handle_event(self, event: pg.event.Event):
         pass
