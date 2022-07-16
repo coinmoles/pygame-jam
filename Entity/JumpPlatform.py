@@ -8,5 +8,5 @@ class JumpPlatform(Platform):
         super().__init__(pos, ["springboardDown", "springboardUp"], FPS // 5)
         
     def collide_player(self, player, side):
-        if side == "top":
-            player.vel.y = -40
+        if side == "top" or side == "left" or side == "right":
+            player.vel.y = -50

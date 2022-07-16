@@ -31,7 +31,8 @@ class GameGlobals:
                 else:
                     image = pg.transform.scale(image, (UNITSIZE, UNITSIZE))
                 self.images[image_name] = image
-                self.image_rect[image_name] = pg.mask.from_surface(image).get_bounding_rects()[0]
+                bounding_rects = pg.mask.from_surface(image).get_bounding_rects()
+                self.image_rect[image_name] = bounding_rects[0].unionall(bounding_rects[1:])
         
 
 
