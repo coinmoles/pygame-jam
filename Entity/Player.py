@@ -12,15 +12,54 @@ AIR_ACC = 0.3
 GROUND_FRIC = -0.15
 AIR_FRIC = -0.05
 
-P1_WALK = [
+P0_STAND = [
+    "p1_stand"
+]
+
+P0_WALK = [
     "p1_walk01", "p1_walk02", "p1_walk03", "p1_walk04", "p1_walk05", 
     "p1_walk06", "p1_walk07", "p1_walk08", "p1_walk09", "p1_walk10", "p1_walk11"
 ]
 
-P1_DEATH = [
-    "p1_hurt"
+P0_JUMP = [
+    "p1_jump"
 ]
 
+P0_DEATH = [
+    "p1_hurt", "p1_duck"
+]
+
+P1_STAND = [
+    "p2_stand"
+]
+
+P1_WALK = [
+    "p2_walk01", "p2_walk02", "p2_walk03", "p2_walk04", "p2_walk05", 
+    "p2_walk06", "p2_walk07", "p2_walk08", "p2_walk09", "p2_walk10", "p2_walk11"
+]
+
+P1_JUMP = [
+    "p2_jump"
+]
+
+P1_DEATH = [
+    "p2_hurt", "p2_duck"
+]
+
+ANIMS = {
+    0: {
+        "stand": P0_STAND,
+        "walk": P0_WALK,
+        "death": P0_DEATH,
+        "jump": P0_JUMP
+    },
+    1: {
+        "stand": P1_STAND,
+        "walk": P1_WALK,
+        "death": P1_DEATH,
+        "jump": P1_JUMP
+    }
+}
 
 class Player(Entity):
     def __init__(self, pos: Vector2):
@@ -29,13 +68,15 @@ class Player(Entity):
         self.passable = True
 
         self.spawn_point = Vector2(30, 30)
-        self.ability: Callable[[], Corpse] = lambda player: Corpse(player.pos - Vector2(UNITSIZE / 6, 0))
+        self.ability: Callable[[], Corpse] = lambda player: Corpse(player.pos - Vector2(UNITSIZE / 6, 0), player.flip)
         self.prev_rect = self.rect.copy()
         self.drect = pg.rect.Rect(0, 0, UNITSIZE * 2 / 3, UNITSIZE)
 
+        self.prev_transform = 0
+        self.transform = 0
+
         self.grounded = True
         self.dead = False
-        self.last_direction = "r"
 
     def move(self):
         if self.dead:
@@ -52,17 +93,14 @@ class Player(Entity):
         if self.grounded:
             if pressed_keys[pg.K_LEFT]:
                 self.vel.x = GROUND_ACC / GROUND_FRIC
-                self.last_direction = "l"
-                self.set_animation("walkLeft")
+                self.flip = (True, False)
+                self.set_animation("walk")
             elif pressed_keys[pg.K_RIGHT]:
                 self.vel.x = - GROUND_ACC / GROUND_FRIC
-                self.last_direction = "r"
-                self.set_animation("walkRight")
+                self.flip = (False, False)
+                self.set_animation("walk")
             else:
-                if self.last_direction == "r":
-                    self.set_animation("standRight")
-                else:
-                    self.set_animation("standLeft")
+                self.set_animation("stand")
         else:
             if pressed_keys[pg.K_LEFT]:
                 self.acc.x = -AIR_ACC
@@ -73,10 +111,7 @@ class Player(Entity):
         if self.grounded or not self.active:
             self.vel.y = -30
             self.grounded = False
-            if self.last_direction == "r":
-                self.set_animation("jumpRight")
-            else:
-                self.set_animation("jumpLeft")
+            self.set_animation("jump")
 
     def update(self, camera_base: Vector2, timer: int):
         self.prev_rect = self.rect.copy()
@@ -116,26 +151,21 @@ class Player(Entity):
         self.rect = pg.rect.Rect(self.pos, (UNITSIZE * 2 / 3 , UNITSIZE))
 
     def set_animation(self, animation_key: str):
-        if (animation_key == "standRight"):
-            self.set_sprites(["p1_stand"], 1)
-            self.flip = (False, False)
-        elif (animation_key == "jumpRight"):
-            self.set_sprites(["p1_jump"], 1)
-            self.flip = (False, False)
-        elif (animation_key == "walkRight"):
-            self.set_sprites(P1_WALK, FPS // 10)
-            self.flip = (False, False)
-        elif (animation_key == "standLeft"):
-            self.set_sprites(["p1_stand"], 1)
-            self.flip = (True, False)
-        elif (animation_key == "jumpLeft"):
-            self.set_sprites(["p1_jump"], 1)
-            self.flip = (True, False)
-        elif (animation_key == "walkLeft"):
-            self.set_sprites(P1_WALK, FPS // 10)
-            self.flip = (True, False)
-        elif (animation_key == "death"):
-            self.set_sprites(P1_DEATH, 1)
+        if animation_key == "stand":
+            self.set_sprites(ANIMS[self.transform]["stand"], 1)
+        elif animation_key == "walk":
+            self.set_sprites(ANIMS[self.transform]["walk"], FPS // 10)
+        elif animation_key == "jump":
+            self.set_sprites(ANIMS[self.transform]["jump"], 1)
+        # TODO: reset animation on set_sprites (change timer to global)
+        elif animation_key == "death":
+            self.set_sprites(ANIMS[self.transform]["death"], FPS // 3)
+        elif animation_key == "transform":
+            self.set_sprites([ANIMS[self.prev_transform]["stand"], ANIMS[self.transform][self.transform]], FPS // 6)
+    
+    def set_transform(self, item_id: int):
+        self.prev_transform = self.transform
+        self.transform = item_id
 
     def set_ability(self, ability: Callable[[Vector2, Vector2], Entity]):
         self.ability = ability

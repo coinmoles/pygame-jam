@@ -19,7 +19,7 @@ class Scene:
         pass
 
     def update(self):
-        GLOBALS.screen.fill((255, 255, 255))
+        GLOBALS.screen.fill((208, 244, 247))
 
         for entity in self.entityList:
             entity.draw(self.camera_base, self.timer)

@@ -12,6 +12,7 @@ class Cannon(Platform):
 
         self.collide_check = True
         self.passable = False
+        self.item_id = 1
 
     def update_active(self, timer: int):
         if timer % (FPS * 5) == 0:

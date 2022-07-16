@@ -5,7 +5,7 @@ from Scene.Scene import Scene
 from SceneData.parse_stage import parse_stage
 from Entity.Entity import Entity
 from Entity.Player import Player
-from constants import PLAYER_DEATH, SCREEN, CAMERA_RECT, SET_SPAWN, DESPAWN, SPAWN, UNITSIZE
+from constants import PLAYER_DEATH, SCREEN, CAMERA_RECT, SET_SPAWN, DESPAWN, SPAWN, TRANSFORM, TRANSFORM_END, UNITSIZE
 from helper.determine_side import determine_side
 from collections import deque
 from typing import Deque
@@ -52,20 +52,37 @@ class GameScene(Scene):
                 if event.key == pg.K_w:
                     self.set_stage(False)
         
-        if event.type == SET_SPAWN:
+        elif event.type == SET_SPAWN:
             self.player_spawn = event.spawn
 
-        if event.type == SPAWN:
+        elif event.type == SPAWN:
             entity: Entity = event.entity
             self.spawn_entity(entity)
 
-        if event.type == DESPAWN:
+        elif event.type == DESPAWN:
             entity: Entity = event.entity
             self.despawn_entity(entity)
 
-        if event.type == PLAYER_DEATH:
+        elif event.type == PLAYER_DEATH:
+            print(self.player.active)
             if self.player.active:
-                self.player_death() 
+                self.player_death()
+        
+        elif event.type == TRANSFORM:
+            if self.player.active:
+                print('wtf')
+                self.player.active = False
+                self.player.set_transform(event.item_id)
+                self.player.set_animation("transform")
+                pg.time.set_timer(TRANSFORM_END, 500, 1)
+
+        elif event.type == TRANSFORM_END:
+            print('wtf2')
+            self.player.active = True
+            self.player.set_animation("stand")
+        
+        
+
 
     def handle_collision(self):
         hits = pg.sprite.spritecollide(self.player, self.collidables, False)

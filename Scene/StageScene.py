@@ -26,6 +26,6 @@ class StageScene(GameScene):
         self.player.active = False
         self.player.vel = Vector2(0, 0)
         self.player.acc = Vector2(0, 0)
-        self.player.set_animation("rightStand")
+        self.player.set_animation("stand")
         pg.time.set_timer(PLAYER_JUMP, 200, 1)
         pg.time.set_timer(pg.event.Event(CHANGE_SCENE, next_scene_id=(self.id[0], 0)), 1000, 1)
