@@ -162,13 +162,11 @@ class GameScene(Scene):
             self.camera_base.y = self.stage_rect.height - SCREEN.height
 
     def spawn_entity(self, entity: Entity):
-        print("spawn:", entity)
         self.entityList.add(entity)
         if entity.collide_check:
             self.collidables.add(entity)
 
     def despawn_entity(self, entity: Entity):
-        print("despawn:", entity)
         if entity == self.player:
             corpse = self.player.spawn_corpse()
             self.corpses.append(corpse)
@@ -182,7 +180,6 @@ class GameScene(Scene):
             self.spawn_entity(self.player)
 
         if not (entity in self.corpses or isinstance(entity, Player)):
-            print("despawn added")
             self.despawned.add(entity)
         
         self.collidables.remove(entity)
