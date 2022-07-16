@@ -8,12 +8,12 @@ from constants import TRANSFORM
 
 
 class Item(Entity):
-    def __init__(self, pos: Vector2, sprites: List[str], freq: int):
+    def __init__(self, pos: Vector2, sprites: List[str], freq: int, item_id: int):
         super().__init__(pos, sprites, freq)
         self.collide_check = True
         self.passable = True
         self.timer = 0
-        self.item_id = 0
+        self.item_id = item_id
 
     def update(self, camera_base: Vector2, timer: int):
         self.vel = Vector2(0, math.sin(self.timer * math.pi / 20))

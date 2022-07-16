@@ -1,0 +1,8 @@
+from pygame import Vector2
+from Entity.JumpPlatform import JumpPlatform
+from constants import FPS
+
+class JumpCorpse(JumpPlatform):
+    def __init__(self, pos: Vector2):
+        super().__init__(pos)
+        self.set_sprites(["p2_duck", "p2_duck2"], FPS // 5)

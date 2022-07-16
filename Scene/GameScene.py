@@ -42,8 +42,8 @@ class GameScene(Scene):
 
     def handle_event(self, event: pg.event.Event):
         super().handle_event(event)
-        if self.player.active:
-            if event.type == pg.KEYDOWN:
+        if event.type == pg.KEYDOWN:
+            if self.player.active:
                 if event.key == pg.K_SPACE:
                     if self.player.active:
                         self.player.jump()
@@ -64,21 +64,20 @@ class GameScene(Scene):
             self.despawn_entity(entity)
 
         elif event.type == PLAYER_DEATH:
-            print(self.player.active)
             if self.player.active:
                 self.player_death()
         
         elif event.type == TRANSFORM:
             if self.player.active:
-                print('wtf')
                 self.player.active = False
+                self.player.paused = True
                 self.player.set_transform(event.item_id)
                 self.player.set_animation("transform")
-                pg.time.set_timer(TRANSFORM_END, 500, 1)
+                pg.time.set_timer(TRANSFORM_END, 1000, 1)
 
         elif event.type == TRANSFORM_END:
-            print('wtf2')
             self.player.active = True
+            self.player.paused = False
             self.player.set_animation("stand")
         
         
@@ -183,9 +182,7 @@ class GameScene(Scene):
 
     def player_death(self):        
         self.player.active = False
-        self.player.dead = True
-        self.player.vel = Vector2(0, 0)
-        self.player.acc = Vector2(0, 0)
+        self.player.paused = True
         self.player.set_animation("death")
         pg.time.set_timer(pg.event.Event(DESPAWN, entity=self.player), 500, 1)
 

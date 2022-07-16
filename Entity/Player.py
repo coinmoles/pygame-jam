@@ -1,4 +1,4 @@
-from Entity.Corpse import Corpse
+from Entity.Corpse.Corpse import Corpse
 from Entity.Entity import Entity
 from constants import FPS, UNITSIZE
 from pygame.math import Vector2
@@ -76,16 +76,12 @@ class Player(Entity):
         self.transform = 0
 
         self.grounded = True
-        self.dead = False
+        self.paused = False
 
     def move(self):
-        if self.dead:
-            self.acc = Vector2(0, 0)
-            return
-        
         self.acc = Vector2(0, 0.8)
 
-        if not self.active:
+        if not self.active or self.paused:
             return
         
         pressed_keys = pg.key.get_pressed()
@@ -108,23 +104,30 @@ class Player(Entity):
                 self.acc.x = AIR_ACC
 
     def jump(self):
+        if self.paused:
+            return
+        
         if self.grounded or not self.active:
             self.vel.y = -30
             self.grounded = False
             self.set_animation("jump")
 
-    def update(self, camera_base: Vector2, timer: int):
-        self.prev_rect = self.rect.copy()
+    def update(self, camera_base: Vector2, timer: int): 
+        self.sprite_index = ((timer - self.sprites_start) // self.freq) % self.sprites_len
+        self.surf = GLOBALS.images[self.sprites[self.sprite_index]]
+
+        if self.flip[0] or self.flip[0]:
+            self.surf = pg.transform.flip(self.surf, self.flip[0], self.flip[1])
+   
+        if self.paused:
+            return
         
+        self.prev_rect = self.rect.copy()
+    
         if self.grounded:
             self.acc += self.vel * GROUND_FRIC
         else:
             self.acc += self.vel * AIR_FRIC
-
-        self.sprite_index = ((timer - self.sprites_start) // self.freq) % self.sprites_len
-        self.surf = GLOBALS.images[self.sprites[self.sprite_index]]
-        if self.flip[0] or self.flip[0]:
-            self.surf = pg.transform.flip(self.surf, self.flip[0], self.flip[1])
         
         self.vel += self.acc
         self.set_pos(self.pos + self.vel + 0.5 * self.acc)
@@ -161,7 +164,7 @@ class Player(Entity):
         elif animation_key == "death":
             self.set_sprites(ANIMS[self.transform]["death"], FPS // 3)
         elif animation_key == "transform":
-            self.set_sprites([ANIMS[self.prev_transform]["stand"], ANIMS[self.transform][self.transform]], FPS // 6)
+            self.set_sprites([ANIMS[self.prev_transform]["stand"][0], ANIMS[self.transform]["stand"][0]], FPS // 6)
     
     def set_transform(self, item_id: int):
         self.prev_transform = self.transform
