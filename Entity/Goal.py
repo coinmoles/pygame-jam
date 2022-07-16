@@ -1,8 +1,10 @@
+from sre_parse import GLOBAL_FLAGS
 from pygame import Vector2
 from Entity.Entity import Entity
 import pygame as pg
 
 from constants import FPS, STAGE_CLEAR
+from globals import GLOBALS
 
 
 class Goal(Entity):
@@ -22,5 +24,6 @@ class Goal(Entity):
 
         if player.grounded:
             self.checked = True
+            pg.mixer.music.fadeout(1000)
             self.set_sprites(["flagGreen", "flagGreen2"], FPS // 5)
             pg.event.post(pg.event.Event(STAGE_CLEAR))

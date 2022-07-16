@@ -10,6 +10,7 @@ class GameGlobals:
         self.screen: Union[pg.Surface, None] = None
         self.images: Dict[str, pg.Surface] = {}
         self.image_rect: Dict[str, pg.Rect] = {}
+        self.sfx_dict: Dict[str, pg.mixer.Sound] = {}
 
     def set_screen(self, screen: pg.Surface):
         self.screen = screen
@@ -33,7 +34,19 @@ class GameGlobals:
                 self.images[image_name] = image
                 bounding_rects = pg.mask.from_surface(image).get_bounding_rects()
                 self.image_rect[image_name] = bounding_rects[0].unionall(bounding_rects[1:])
+
+    def load_sounds(self):
+        path = './assets/sound/sfx'
+        for subdir, dirs, file_names in os.walk(path):
+            for name in file_names:
+                if not name.endswith('.wav'):
+                    continue
+                sound_name = os.path.splitext(name)[0]
+                sound = pg.mixer.Sound(os.path.join(subdir, name))
+                self.sfx_dict[sound_name] = sound
         
+        self.sfx_dict["Powerup1"].set_volume(0.3)
+        self.sfx_dict["Powerup"].set_volume(0.2)
 
 
 GLOBALS = GameGlobals()

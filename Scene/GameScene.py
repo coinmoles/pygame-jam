@@ -6,6 +6,7 @@ from SceneData.parse_stage import parse_stage
 from Entity.Entity import Entity
 from Entity.Player import Player
 from constants import PLAYER_DEATH, SCREEN, CAMERA_RECT, SET_SPAWN, DESPAWN, SPAWN, TRANSFORM, TRANSFORM_END, UNITSIZE
+from globals import GLOBALS
 from helper.determine_side import determine_side
 from collections import deque
 from typing import Deque
@@ -188,6 +189,7 @@ class GameScene(Scene):
     def player_death(self):        
         self.player.active = False
         self.player.paused = True
+        pg.mixer.Sound.play(GLOBALS.sfx_dict["Lose1"])
         self.player.set_animation("death")
         pg.time.set_timer(pg.event.Event(DESPAWN, entity=self.player), 500, 1)
 

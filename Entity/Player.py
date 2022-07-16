@@ -110,6 +110,7 @@ class Player(Entity):
         if self.grounded or not self.active:
             self.vel.y = -30
             self.grounded = False
+            pg.mixer.Sound.play(GLOBALS.sfx_dict["Jump"])
             self.set_animation("jump")
 
     def update(self, camera_base: Vector2, timer: int): 

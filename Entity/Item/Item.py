@@ -5,6 +5,7 @@ import math
 from typing import Callable, List
 
 from constants import TRANSFORM
+from globals import GLOBALS
 
 
 class Item(Entity):
@@ -22,6 +23,7 @@ class Item(Entity):
 
     def collide_player(self, player, side):
         player.set_ability(self.ability_give())
+        pg.mixer.Sound.play(GLOBALS.sfx_dict["Powerup1"], 1)
         pg.event.post(pg.event.Event(TRANSFORM, item_id=self.item_id))
         self.despawn()
         
