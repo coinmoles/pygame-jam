@@ -13,7 +13,7 @@ import sys
 class Game:
     def __init__(self):
         pg.init()
-        icon = pg.image.load('assets/images/icon.png')
+        icon = pg.image.load('./assets/images/icon.png')
         pg.display.set_icon(icon)
         pg.display.set_caption("시체 밟는 게임")
         GLOBALS.set_screen(pg.display.set_mode((SCREEN.width, SCREEN.height), 0, 32))

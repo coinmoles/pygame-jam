@@ -1,4 +1,3 @@
-from this import d
 from typing import Set, Tuple, Union
 import pygame as pg
 from typing import Dict
