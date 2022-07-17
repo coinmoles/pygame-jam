@@ -10,7 +10,7 @@ from globals import GLOBALS
 
 class Cannon(Platform):
     def __init__(self, pos: Vector2, direction: int):
-        super().__init__(pos, ["gemRed"], 1)
+        super().__init__(pos, ["cannon" + str(direction)], 1)
 
         self.collide_check = True
         self.passable = False

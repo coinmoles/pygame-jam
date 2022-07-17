@@ -4,7 +4,7 @@ from pygame.math import Vector2
 
 class Fireball(KillPlatform):
     def __init__(self, pos: Vector2, vel: Vector2):
-        super().__init__(pos, ["fireball"])
+        super().__init__(pos, ["cannonball"])
         self.vel = vel
 
     def collide_player(self, player, side):
