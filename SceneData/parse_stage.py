@@ -74,8 +74,7 @@ def parse_stage(s: str, _id: Tuple[int, int]) -> Callable[[], Tuple[pg.sprite.Gr
                 elif j + 1 < width and m[i][j + 1] == TOKENS["GrassPlatform"]:
                     entities.add(Spike(position, 3))
                 else:
-                    entities.add(Spike(position, 2))
-                 
+                    entities.add(Spike(position, 2))                 
 
             if m[i][j] == TOKENS["JumpPlatform"]:
                 entities.add(JumpPlatform(position))

@@ -7,9 +7,9 @@ from typing import Callable, List
 
 from globals import GLOBALS
 
-GROUND_ACC = 1.0
+GROUND_ACC = 2
 AIR_ACC = 0.3
-GROUND_FRIC = -0.15
+GROUND_FRIC = -0.3
 AIR_FRIC = -0.05
 
 P0_STAND = [
@@ -113,11 +113,11 @@ class Player(Entity):
 
         if self.grounded:
             if pressed_keys[pg.K_LEFT]:
-                self.vel.x = GROUND_ACC / GROUND_FRIC
+                self.acc.x = -GROUND_ACC
                 self.flip = (True, False)
                 self.set_animation("walk")
             elif pressed_keys[pg.K_RIGHT]:
-                self.vel.x = - GROUND_ACC / GROUND_FRIC
+                self.acc.x = GROUND_ACC
                 self.flip = (False, False)
                 self.set_animation("walk")
             else:

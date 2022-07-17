@@ -6,16 +6,14 @@ from Entity.BackgroundObject.ControlHelp import ControlHelp
 from Entity.BackgroundObject.DoorTop import DoorTop
 from Entity.Door import Door
 from Entity.GrassPlatform import GrassPlatform
-from Entity.KillPlatform import KillPlatform
-from Entity.Item.JumpItem import JumpItem
-from Entity.Cannon import Cannon
-from constants import COLORS, UNITSIZE
-from Entity.Platform import Platform
+from Entity.JumpPlatform import JumpPlatform
+from constants import UNITSIZE
 from globals import GLOBALS
 
 TOKENS: Final[Dict[str, str]] = {
     "GrassPlatform": "p",
     "SpawnPoint": "s",
+    "JumpPlatform": "J",
     "Control1": "!",
     "Control2": "@",
     "Control3": "#",
@@ -51,6 +49,9 @@ def parse_menu(s: str, cur_id: int) -> Callable[[], Tuple[pg.sprite.Group, pg.Re
                     entities.add(GrassPlatform(position, False))
                 else:
                     entities.add(GrassPlatform(position, True))
+
+            if m[i][j] == TOKENS["JumpPlatform"]:
+                entities.add(JumpPlatform(position))
 
             if m[i][j] == TOKENS["SpawnPoint"]:
                 player_spawn = position

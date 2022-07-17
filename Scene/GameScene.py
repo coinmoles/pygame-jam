@@ -84,7 +84,7 @@ class GameScene(Scene):
                 self.player.paused = True
                 self.player.set_transform(event.item_id)
                 self.player.set_animation("transform")
-                pg.time.set_timer(TRANSFORM_END, 1000, 1)
+                pg.time.set_timer(TRANSFORM_END, 980, 1)
 
         elif event.type == TRANSFORM_END:
             self.player.active = True
@@ -122,10 +122,10 @@ class GameScene(Scene):
                 self.player.grounded = False
             
             if min_left is not None:
-                self.player.set_x(min_left - UNITSIZE * 2 / 3 - 1)
+                self.player.set_x(min_left - UNITSIZE * 2 / 3 - 3)
                 self.player.vel.x = 0
             if max_right is not None:
-                self.player.set_x(max_right)
+                self.player.set_x(max_right + 3)
                 self.player.vel.x = 0
             if max_bottom is not None:
                 self.player.set_y(max_bottom)
