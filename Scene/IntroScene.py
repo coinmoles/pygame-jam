@@ -1,7 +1,7 @@
 import pygame as pg
 from Scene.Scene import Scene
 from Entity.BackgroundObject.Background import Background
-from constants import CHANGE_SCENE, COLORS, SCREEN
+from constants import CHANGE_SCENE, COLORS, OPEN_LOAD, SCREEN
 from globals import GLOBALS
 
 class IntroScene(Scene):
@@ -21,7 +21,7 @@ class IntroScene(Scene):
                 if self.choice == 0:
                     pg.event.post(pg.event.Event(CHANGE_SCENE, next_scene_id=(1, 1)))
                 elif self.choice == 1:
-                    pg.event.post(pg.event.Event(CHANGE_SCENE, next_scene_id=(0, 0)))
+                    pg.event.post(pg.event.Event(OPEN_LOAD, current_id=(-1, 0)))
                 elif self.choice == 2:
                     pg.event.post(pg.event.Event(pg.QUIT))
                 else:

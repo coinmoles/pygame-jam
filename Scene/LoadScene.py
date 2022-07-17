@@ -1,6 +1,6 @@
 import pygame as pg
 from Scene.Scene import Scene
-from constants import CHANGE_SCENE, COLORS, SCREEN
+from constants import CHANGE_SCENE, COLORS, OPEN_INTRO, SCREEN
 from globals import GLOBALS
 from helper.get_background_color import get_background_color
 from helper.save_load import load_game
@@ -24,7 +24,8 @@ class LoadScene(Scene):
             if event.key == pg.K_RETURN:
                 if self.loading:
                     self.loading = False
-                    pg.event.post(pg.event.Event(CHANGE_SCENE, next_scene_id=self.current_id))
+                    if self.loading_success:
+                        pg.event.post(pg.event.Event(CHANGE_SCENE, next_scene_id=self.current_id))
                 elif self.choice in [0, 1, 2]:
                     loaded_id = load_game(self.choice)
                     self.loading = True
@@ -43,7 +44,10 @@ class LoadScene(Scene):
                 self.choice = (self.choice + 1) % 3
             
             elif event.key == pg.K_ESCAPE:
-                pg.event.post(pg.event.Event(CHANGE_SCENE, next_scene_id=self.current_id))
+                if self.current_id[0] != -1:
+                    pg.event.post(pg.event.Event(CHANGE_SCENE, next_scene_id=self.current_id))
+                else:
+                    pg.event.post(pg.event.Event(OPEN_INTRO))
 
     def update(self):
         super().update()

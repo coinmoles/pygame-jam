@@ -25,6 +25,7 @@ OPEN_LOAD = pg.USEREVENT + 12
 OPEN_SAVE = pg.USEREVENT + 13
 END_SAVELOAD = pg.USEREVENT + 14
 PLAYER_RESPAWN = pg.USEREVENT + 15
+OPEN_INTRO = pg.USEREVENT + 16
 
 TOKENS: Final[Dict[str, str]] = {
     "GrassPlatform": "p",
