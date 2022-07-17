@@ -42,6 +42,12 @@ class GameScene(Scene):
         # 엔티티 그리기
         super().update()
 
+    def scene_end(self):
+        super().scene_end()
+        self.entityList.empty()
+        self.collidables.empty()
+        self.despawned.empty()
+
     def handle_event(self, event: pg.event.Event):
         super().handle_event(event)
         if event.type == pg.KEYDOWN:
