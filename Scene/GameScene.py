@@ -5,7 +5,8 @@ from Scene.Scene import Scene
 from Entity.Entity import Entity
 from Entity.Item.Item import Item
 from Entity.Player import Player
-from constants import PLAYER_DEATH, SCREEN, CAMERA_RECT, SET_SPAWN, DESPAWN, SPAWN, TRANSFORM, TRANSFORM_END, UNITSIZE
+from Entity.Fireball import Fireball
+from constants import PLAYER_DEATH, PLAYER_RESPAWN, SCREEN, CAMERA_RECT, SET_SPAWN, DESPAWN, SPAWN, TRANSFORM, TRANSFORM_END, UNITSIZE
 from globals import GLOBALS
 from helper.determine_side import determine_side
 from collections import deque
@@ -18,6 +19,7 @@ class GameScene(Scene):
     def __init__(self, stage: str, _id: Tuple[int, int]):
         super().__init__(_id)
         self.collidables = pg.sprite.Group()
+        self.spawned = pg.sprite.Group()
         self.despawned = pg.sprite.Group()
         self.corpses: Deque[pg.sprite.Sprite] = deque()
         self.stage_rect = pg.Rect(0, 0, 0, 0)
@@ -60,6 +62,8 @@ class GameScene(Scene):
                 if event.key == pg.K_w:
                     self.reset_stage()
                 if event.key == pg.K_q:
+                    if len(self.corpses) == 0:
+                        return
                     corpse = self.corpses.pop()
                     self.despawn_entity(corpse)
         
@@ -77,6 +81,9 @@ class GameScene(Scene):
         elif event.type == PLAYER_DEATH:
             if self.player.active:
                 self.player_death()
+
+        elif event.type == PLAYER_RESPAWN:
+            self.player_respawn()
         
         elif event.type == TRANSFORM:
             if self.player.active:
@@ -173,7 +180,16 @@ class GameScene(Scene):
         if entity.collide_check:
             self.collidables.add(entity)
 
+        if isinstance(entity, Fireball):
+            self.spawned.add(entity)
+
     def despawn_entity(self, entity: Entity):
+        if isinstance(entity, Item):
+            self.despawned.add(entity)
+        
+        self.collidables.remove(entity)
+        self.entityList.remove(entity)
+
         if entity == self.player:
             corpse = self.player.spawn_corpse()
             self.corpses.append(corpse)
@@ -182,22 +198,21 @@ class GameScene(Scene):
             if len(self.corpses) > MAX_CORPSE:
                 corpse = self.corpses.popleft()
                 corpse.despawn()
+            pg.event.post(pg.event.Event(PLAYER_RESPAWN))
 
-            self.player = Player(self.player_spawn)
-            self.spawn_entity(self.player)
-
-        if isinstance(entity, Item):
-            self.despawned.add(entity)
-        
-        self.collidables.remove(entity)
-        self.entityList.remove(entity)
-
-    def player_death(self):        
+    def player_death(self):
         self.player.active = False
         self.player.paused = True
         pg.mixer.Sound.play(GLOBALS.sfx_dict["Lose1"])
         self.player.set_animation("death")
         pg.time.set_timer(pg.event.Event(DESPAWN, entity=self.player), 500, 1)
+
+    def player_respawn(self):
+        for spawned in self.spawned:
+            spawned.kill()
+
+        self.player = Player(self.player_spawn)
+        self.spawn_entity(self.player)
 
     def set_stage(self):
         self.entityList = pg.sprite.Group()
@@ -215,11 +230,13 @@ class GameScene(Scene):
 
     def reset_stage(self):
         for corpse in self.corpses:
-            self.despawn_entity(corpse)
+            corpse.kill()
         
         for entity in self.despawned:
             self.spawn_entity(entity)
-            
+        
+        for spawned in self.spawned:
+            spawned.kill()
         self.collidables.remove(self.player)
         self.entityList.remove(self.player)
         self.player = Player(self.player_spawn)

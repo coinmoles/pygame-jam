@@ -3,8 +3,8 @@ from screeninfo import get_monitors
 import pygame as pg
 
 SCREEN = get_monitors()[0]
-# SCREEN.width = 1600
-# SCREEN.height = 900
+SCREEN.width = 1600
+SCREEN.height = 900
 UNITSIZE = SCREEN.height / 9
 FPS = 60
 
@@ -24,6 +24,7 @@ PLAY_SFX = pg.USEREVENT + 11
 OPEN_LOAD = pg.USEREVENT + 12
 OPEN_SAVE = pg.USEREVENT + 13
 END_SAVELOAD = pg.USEREVENT + 14
+PLAYER_RESPAWN = pg.USEREVENT + 15
 
 TOKENS: Final[Dict[str, str]] = {
     "GrassPlatform": "p",

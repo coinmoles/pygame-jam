@@ -31,7 +31,7 @@ class Cannon(Platform):
         if GLOBALS.timer == 0:
             return
         
-        if GLOBALS.timer % (FPS * 5) == 0:
+        if GLOBALS.timer % (FPS * 3) == 0:
             pg.event.post(pg.event.Event(
                 SPAWN, entity=Fireball(self.pos, self.fireball_direction)
             ))

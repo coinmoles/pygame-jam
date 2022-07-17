@@ -4,7 +4,7 @@ import pygame as pg
 from pygame.math import Vector2
 from Scene.GameScene import GameScene
 from SceneData.parse_stage import parse_stage
-from constants import CHANGE_SCENE, PLAY_SFX, PLAYER_DEATH, PLAYER_JUMP, SET_CHECKPOINT, STAGE_CLEAR
+from constants import CHANGE_SCENE, PLAY_SFX, PLAYER_JUMP, STAGE_CLEAR
 from globals import GLOBALS
 
 MAX_CORPSE = 5

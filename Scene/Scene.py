@@ -23,6 +23,7 @@ class Scene:
         pg.mixer.music.play(-1, 0)
 
     def scene_end(self):
+        pg.event.clear()
         pg.mixer.music.stop()
         pg.mixer.music.unload()
 
