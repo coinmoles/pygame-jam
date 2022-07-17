@@ -12,4 +12,4 @@ class CannonItem(Item):
         super().__init__(pos, ["gemRed"], 1, 2)
 
     def ability_give(self) -> Callable[[Entity], Entity]:
-        return lambda player: CannonCorpse(player.pos - Vector2(UNITSIZE / 6, 0), player.flip)
+        return lambda player: CannonCorpse(player.pos, player.flip)

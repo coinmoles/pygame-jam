@@ -91,7 +91,7 @@ class Player(Entity):
         self.passable = True
 
         self.spawn_point = Vector2(30, 30)
-        self.ability: Callable[[], Corpse] = lambda player: Corpse(player.pos - Vector2(UNITSIZE / 6, 0), player.flip)
+        self.ability: Callable[[], Corpse] = lambda player: Corpse(player.pos, player.flip)
         self.prev_rect = self.rect.copy()
         self.drect = pg.rect.Rect(0, 0, UNITSIZE * 2 / 3, UNITSIZE)
 

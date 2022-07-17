@@ -11,4 +11,4 @@ class JumpItem(Item):
         super().__init__(pos, ["gemBlue"], 1, 1)
 
     def ability_give(self) -> Callable[[Entity], Entity]:
-        return lambda player: JumpCorpse(player.pos - Vector2(UNITSIZE / 6, 0), player.flip)
+        return lambda player: JumpCorpse(player.pos, player.flip)
