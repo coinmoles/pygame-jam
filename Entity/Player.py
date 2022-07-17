@@ -46,6 +46,23 @@ P1_DEATH = [
     "p2_hurt", "p2_duck"
 ]
 
+P2_STAND = [
+    "p3_stand"
+]
+
+P2_WALK = [
+    "p3_walk01", "p3_walk02", "p3_walk03", "p3_walk04", "p3_walk05", 
+    "p3_walk06", "p3_walk07", "p3_walk08", "p3_walk09", "p3_walk10", "p3_walk11"
+]
+
+P2_JUMP = [
+    "p3_jump"
+]
+
+P2_DEATH = [
+    "p3_hurt", "p3_duck"
+]
+
 ANIMS = {
     0: {
         "stand": P0_STAND,
@@ -58,7 +75,13 @@ ANIMS = {
         "walk": P1_WALK,
         "death": P1_DEATH,
         "jump": P1_JUMP
-    }
+    }, 
+    2: {
+        "stand": P2_STAND,
+        "walk": P2_WALK,
+        "death": P2_DEATH,
+        "jump": P2_JUMP
+    },
 }
 
 class Player(Entity):

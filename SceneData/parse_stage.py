@@ -7,6 +7,7 @@ from Entity.BackgroundObject.ControlHelp import ControlHelp
 from Entity.CheckPoint import CheckPoint
 from Entity.Door import Door
 from Entity.GrassPlatform import GrassPlatform
+from Entity.Item.CannonItem import CannonItem
 from Entity.Spike import Spike
 from Entity.JumpPlatform import JumpPlatform
 from Entity.Item.JumpItem import JumpItem
@@ -28,6 +29,7 @@ TOKENS: Final[Dict[str, str]] = {
     "Cannon1": "y",
     "Cannon2": "u",
     "Cannon3": "h",
+    "CannonItem": "G",
     "Control1": "!",
     "Control2": "@",
     "Control3": "#",
@@ -78,6 +80,9 @@ def parse_stage(s: str, _id: Tuple[int, int]) -> Callable[[], Tuple[pg.sprite.Gr
 
             if m[i][j] == TOKENS["JumpItem"]:
                 entities.add(JumpItem(position))
+            
+            if m[i][j] == TOKENS["CannonItem"]:
+                entities.add(CannonItem(position))
 
             if m[i][j] == TOKENS["CheckPoint"]:
                 entities.add(CheckPoint(position))
@@ -94,7 +99,7 @@ def parse_stage(s: str, _id: Tuple[int, int]) -> Callable[[], Tuple[pg.sprite.Gr
         
             for k in range(4):
                 if m[i][j] == TOKENS["Cannon" + str(k)]:
-                    entities.add(Cannon(position, ["grassCenter"], k))
+                    entities.add(Cannon(position, k))
 
             if m[i][j] == TOKENS["SpawnPoint"]:
                 player_spawn = position

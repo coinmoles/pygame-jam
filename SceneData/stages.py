@@ -20,7 +20,7 @@ stages = {
         "ch2": chapter2
     },
     "ch1": {
-        "stage1": stage1_1,
+        "stage1": stage1_6,
         "stage2": stage1_2,
         "stage3": stage1_3,
         "stage4": stage1_4,

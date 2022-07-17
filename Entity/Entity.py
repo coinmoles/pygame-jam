@@ -71,6 +71,10 @@ class Entity(pg.sprite.Sprite):
         self.sprites_len = len(sprites)
         self.freq = freq
 
+        self.surf = GLOBALS.images[self.sprites[self.sprite_index]]
+        if self.flip[0] or self.flip[0]:
+            self.surf = pg.transform.flip(self.surf, self.flip[0], self.flip[1])
+
     def despawn(self):
         pg.event.post(pg.event.Event(DESPAWN, entity=self))
 

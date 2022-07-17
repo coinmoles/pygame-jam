@@ -32,7 +32,7 @@ class GameGlobals:
                     continue
                 image_name = os.path.splitext(name)[0]
                 image = pg.image.load(os.path.join(subdir, name)).convert_alpha()
-                if subdir == "./assets/images\p1" or subdir == "./assets/images\p2":
+                if subdir == "./assets/images\p1" or subdir == "./assets/images\p2" or subdir == "./assets/images\p3":
                     motion = image_name.split("_")[1]
                     if motion == "stand" or motion == "p1_jump":
                         image = pg.transform.scale(image, (UNITSIZE * 2 / 3, UNITSIZE))

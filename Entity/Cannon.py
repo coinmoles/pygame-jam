@@ -9,9 +9,8 @@ from globals import GLOBALS
 
 
 class Cannon(Platform):
-    def __init__(self, pos: Vector2, sprites: List[str], direction: int):
-        super().__init__(pos, sprites, 1)
-        print(self.pos)
+    def __init__(self, pos: Vector2, direction: int):
+        super().__init__(pos, ["gemRed"], 1)
 
         self.collide_check = True
         self.passable = False
@@ -20,14 +19,15 @@ class Cannon(Platform):
 
         if direction == 0:
             self.fireball_direction = Vector2(-5, 0)
-        if direction == 1:
+        elif direction == 1:
             self.fireball_direction = Vector2(0, -5)
-        if direction == 2:
+        elif direction == 2:
             self.fireball_direction = Vector2(5, 0)
-        if direction == 3:
+        elif direction == 3:
             self.fireball_direction = Vector2(0, 5)
 
     def update_active(self):
+        super().update_active()
         if GLOBALS.timer == 0:
             return
         
