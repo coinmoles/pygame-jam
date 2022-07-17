@@ -10,6 +10,7 @@ class ChapterScene(GameScene):
         super().__init__(stage, _id)
         self.stage = parse_menu(stage)
         self.set_stage()
+        self.music_path = "assets/sound/music/WorldmapTheme.mp3"
 
     def handle_event(self, event: pg.event.Event):
         if event.type == pg.KEYDOWN:

@@ -12,12 +12,11 @@ class Game:
         pg.init()
         GLOBALS.set_screen(pg.display.set_mode((SCREEN.width, SCREEN.height), 0, 32))
         GLOBALS.load_images()
+        GLOBALS.load_sounds()
         self.current_scene = ChapterScene(main_menu, (0, 0))
         self.clock = pg.time.Clock()
 
     def run(self):
-        self.current_scene.scene_start()
-
         while True:
             for event in pg.event.get():
                 self.handle_event(event)
@@ -38,4 +37,5 @@ class Game:
             else:
                 self.current_scene.scene_end()
                 self.current_scene = parse_id(*event.next_scene_id)
+                self.current_scene.scene_start()
 
