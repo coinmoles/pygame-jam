@@ -24,7 +24,10 @@ TOKENS: Final[Dict[str, str]] = {
     "JumpPlatform": "J",
     "Goal": "d",
     "SpawnPoint": "s",
-    "Cannon": "g",
+    "Cannon0": "g",
+    "Cannon1": "y",
+    "Cannon2": "u",
+    "Cannon3": "h",
     "Control1": "!",
     "Control2": "@",
     "Control3": "#",
@@ -89,8 +92,9 @@ def parse_stage(s: str, _id: Tuple[int, int]) -> Callable[[], Tuple[pg.sprite.Gr
                 if m[i][j] == TOKENS["Control" + str(k)]:
                     entities.add(ControlHelp(position, k))
         
-            if m[i][j] == TOKENS["Cannon"]:
-                entities.add(Cannon(position, ["grassCenter"]))
+            for k in range(4):
+                if m[i][j] == TOKENS["Cannon" + str(k)]:
+                    entities.add(Cannon(position, ["grassCenter"], k))
 
             if m[i][j] == TOKENS["SpawnPoint"]:
                 player_spawn = position

@@ -9,12 +9,23 @@ from globals import GLOBALS
 
 
 class Cannon(Platform):
-    def __init__(self, pos: Vector2, sprites: List[str]):
+    def __init__(self, pos: Vector2, sprites: List[str], direction: int):
         super().__init__(pos, sprites, 1)
+        print(self.pos)
 
         self.collide_check = True
         self.passable = False
         self.item_id = 1
+        self.fireball_direction = Vector2(0, 0)
+
+        if direction == 0:
+            self.fireball_direction = Vector2(-5, 0)
+        if direction == 1:
+            self.fireball_direction = Vector2(0, -5)
+        if direction == 2:
+            self.fireball_direction = Vector2(5, 0)
+        if direction == 3:
+            self.fireball_direction = Vector2(0, 5)
 
     def update_active(self):
         if GLOBALS.timer == 0:
@@ -22,7 +33,7 @@ class Cannon(Platform):
         
         if GLOBALS.timer % (FPS * 5) == 0:
             pg.event.post(pg.event.Event(
-                SPAWN, entity=Fireball(self.pos - Vector2(self.rect.width, 0), Vector2(-5, 0))
+                SPAWN, entity=Fireball(self.pos, self.fireball_direction)
             ))
 
     def check_active(self, camera_base):
