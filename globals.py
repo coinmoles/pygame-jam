@@ -2,7 +2,7 @@ from typing import Union
 import pygame as pg
 from typing import Dict
 import os
-from constants import UNITSIZE
+from constants import SCREEN, UNITSIZE
 
 
 class GameGlobals:
@@ -33,6 +33,8 @@ class GameGlobals:
                         image = pg.transform.scale(image, (UNITSIZE * 2 / 3, UNITSIZE))
                     else:
                         image = pg.transform.scale(image, (UNITSIZE * 2 / 3 * 1.05, UNITSIZE * 1.05))
+                elif subdir == "./assets/images\\background":
+                    image = pg.transform.scale(image, (SCREEN.width, SCREEN.height))
                 else:
                     image = pg.transform.scale(image, (UNITSIZE, UNITSIZE))
                 self.images[image_name] = image
