@@ -1,10 +1,12 @@
 from re import S
+from tkinter import UNITS
 from typing import Tuple
 from Entity.Door import Door
+from Entity.BackgroundObject.ControlHelp import ControlHelp
 from Scene.GameScene import GameScene
 from SceneData.parse_menu import parse_menu
 import pygame as pg
-from constants import CHANGE_SCENE
+from constants import CHANGE_SCENE, OPEN_LOAD, OPEN_SAVE, UNITSIZE
 
 
 class ChapterScene(GameScene):
@@ -18,7 +20,11 @@ class ChapterScene(GameScene):
         if event.type == pg.KEYDOWN:
             if event.key == pg.K_RETURN:
                 self.open_door()
-                
+            elif event.key == pg.K_d:
+                pg.event.post(pg.event.Event(OPEN_SAVE, current_id=self.id))
+            elif event.key == pg.K_f:
+                pg.event.post(pg.event.Event(OPEN_LOAD, current_id=self.id))
+            
         super().handle_event(event)
 
     def open_door(self):

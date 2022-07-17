@@ -30,6 +30,8 @@ TOKENS: Final[Dict[str, str]] = {
     "Control3": "#",
     "Control4": "$",
     "Control5": "%",
+    "Control6": "^",
+    "Control7": "&",
 }
 
 
@@ -83,7 +85,7 @@ def parse_stage(s: str, _id: Tuple[int, int]) -> Callable[[], Tuple[pg.sprite.Gr
             if m[i][j] == TOKENS["Goal"]:
                 entities.add(Goal(position, _id))
             
-            for k in range(1, 6):
+            for k in range(1, 8):
                 if m[i][j] == TOKENS["Control" + str(k)]:
                     entities.add(ControlHelp(position, k))
         

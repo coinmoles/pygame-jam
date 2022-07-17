@@ -1,4 +1,6 @@
 import pygame as pg
+from Scene.LoadScene import LoadScene
+from Scene.SaveScene import SaveScene
 from SceneData.main_menu import main_menu
 from Scene.IntroScene import IntroScene
 from constants import *
@@ -41,3 +43,12 @@ class Game:
                 self.current_scene = parse_id(*event.next_scene_id)
                 self.current_scene.scene_start()
 
+        elif event.type == OPEN_LOAD:
+            self.current_scene.scene_end()
+            self.current_scene = LoadScene(event.current_id)
+            self.current_scene.scene_start()
+        
+        elif event.type == OPEN_SAVE:
+            self.current_scene.scene_end()
+            self.current_scene = SaveScene(event.current_id)
+            self.current_scene.scene_start()

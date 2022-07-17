@@ -2,6 +2,7 @@ from typing import Callable, Dict, Final, Tuple
 
 import pygame as pg
 from pygame.math import Vector2
+from Entity.BackgroundObject.ControlHelp import ControlHelp
 from Entity.BackgroundObject.DoorTop import DoorTop
 from Entity.Door import Door
 from Entity.GrassPlatform import GrassPlatform
@@ -15,6 +16,13 @@ from globals import GLOBALS
 TOKENS: Final[Dict[str, str]] = {
     "GrassPlatform": "p",
     "SpawnPoint": "s",
+    "Control1": "!",
+    "Control2": "@",
+    "Control3": "#",
+    "Control4": "$",
+    "Control5": "%",
+    "Control6": "^",
+    "Control7": "&",
 }
 
 
@@ -44,6 +52,10 @@ def parse_menu(s: str, cur_id: int) -> Callable[[], Tuple[pg.sprite.Group, pg.Re
 
             if m[i][j] == TOKENS["SpawnPoint"]:
                 player_spawn = position
+            
+            for k in range(1, 8):
+                if m[i][j] == TOKENS["Control" + str(k)]:
+                    entities.add(ControlHelp(position, k))
 
             if m[i][j] in ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]:
                 locked = True
@@ -54,10 +66,8 @@ def parse_menu(s: str, cur_id: int) -> Callable[[], Tuple[pg.sprite.Group, pg.Re
                     if int(m[i][j]) == 1 or (cur_id, int(m[i][j]) - 1) in GLOBALS.cleared_stages:
                         locked = False
                     
-                if i - 1 >= 0 and m[i-1][j] != m[i][j]:
-                    entities.add(DoorTop(position, locked))
-                else:
-                    entities.add(Door(position, int(m[i][j]), locked))
+                entities.add(DoorTop(position - Vector2(0, UNITSIZE), locked))
+                entities.add(Door(position, int(m[i][j]), locked))
 
     def stage():
         return entities, stage_rect, player_spawn
