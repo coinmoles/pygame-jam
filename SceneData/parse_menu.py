@@ -18,7 +18,7 @@ TOKENS: Final[Dict[str, str]] = {
 }
 
 
-def parse_menu(s: str) -> Callable[[], Tuple[pg.sprite.Group, pg.Rect, Tuple[int, int]]]:
+def parse_menu(s: str, cur_id: int) -> Callable[[], Tuple[pg.sprite.Group, pg.Rect, Tuple[int, int]]]:
     m = [list(l) for l in s.strip().split('\n')]
 
     assert len(m) > 0
@@ -46,10 +46,18 @@ def parse_menu(s: str) -> Callable[[], Tuple[pg.sprite.Group, pg.Rect, Tuple[int
                 player_spawn = position
 
             if m[i][j] in ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]:
-                if i - 1 >= 0 and m[i-1][j] != m[i][j]:
-                    entities.add(DoorTop(position))
+                locked = True
+                if cur_id == 0:
+                    if int(m[i][j]) == 1 or (int(m[i][j]) - 1, 0) in GLOBALS.cleared_stages:
+                        locked = False
                 else:
-                    entities.add(Door(position, int(m[i][j])))
+                    if int(m[i][j]) == 1 or (cur_id, int(m[i][j]) - 1) in GLOBALS.cleared_stages:
+                        locked = False
+                    
+                if i - 1 >= 0 and m[i-1][j] != m[i][j]:
+                    entities.add(DoorTop(position, locked))
+                else:
+                    entities.add(Door(position, int(m[i][j]), locked))
 
     def stage():
         return entities, stage_rect, player_spawn

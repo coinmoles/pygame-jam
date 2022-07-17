@@ -1,5 +1,6 @@
 from re import S
 from typing import Tuple
+from Entity.Door import Door
 from Scene.GameScene import GameScene
 from SceneData.parse_menu import parse_menu
 import pygame as pg
@@ -9,7 +10,7 @@ from constants import CHANGE_SCENE
 class ChapterScene(GameScene):
     def __init__(self, stage: str, _id: Tuple[int, int]):
         super().__init__(stage, _id)
-        self.stage = parse_menu(stage)
+        self.stage = parse_menu(stage, _id[0])
         self.set_stage()
         self.music_path = "assets/sound/music/WorldmapTheme.mp3"
 
@@ -21,14 +22,18 @@ class ChapterScene(GameScene):
         super().handle_event(event)
 
     def open_door(self):
-        hits = pg.sprite.spritecollide(self.player, self.collidables, False)
+        hits = list(filter(lambda hit: isinstance(hit, Door), pg.sprite.spritecollide(self.player, self.collidables, False)))
         
         if len(hits) == 0:
             return
 
-        self.player.active = False
-
         entity = hits[0]
+
+        if entity.locked:
+            return
+        
+        self.player.active = False
+        
         if self.id[0] == 0:
             pg.event.post(pg.event.Event(CHANGE_SCENE, next_scene_id=(entity.id, 0)))
         else:

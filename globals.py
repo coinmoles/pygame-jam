@@ -1,4 +1,5 @@
-from typing import Union
+from this import d
+from typing import Set, Tuple, Union
 import pygame as pg
 from typing import Dict
 import os
@@ -12,6 +13,7 @@ class GameGlobals:
         self.images: Dict[str, pg.Surface] = {}
         self.image_rect: Dict[str, pg.Rect] = {}
         self.sfx_dict: Dict[str, pg.mixer.Sound] = {}
+        self.cleared_stages: Set[Tuple[int, int]] = set()
 
     def set_screen(self, screen: pg.Surface):
         self.screen = screen
@@ -19,6 +21,9 @@ class GameGlobals:
     def reset_timer(self):
         self.timer = 0
     
+    def clear_stage(self, stage_id: Tuple[int, int]):
+        self.cleared_stages.add(stage_id)
+
     def load_images(self):
         path = './assets/images'
         for subdir, dirs, file_names in os.walk(path):

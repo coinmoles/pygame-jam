@@ -1,3 +1,4 @@
+from pickle import GLOBAL
 from typing import Tuple
 import pygame as pg
 from pygame.math import Vector2
@@ -33,6 +34,7 @@ class StageScene(GameScene):
         self.player.vel = Vector2(0, 0)
         self.player.acc = Vector2(0, 0)
         self.player.set_animation("walk")
+        GLOBALS.clear_stage(self.id)
         pg.time.set_timer(pg.event.Event(PLAY_SFX, sfx="WinJazzGuitar"), 1000, 1)
         pg.time.set_timer(PLAYER_JUMP, 2500, 1)
         pg.time.set_timer(pg.event.Event(CHANGE_SCENE, next_scene_id=(self.id[0], 0)), 3000, 1)
