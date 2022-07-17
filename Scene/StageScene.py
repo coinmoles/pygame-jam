@@ -41,4 +41,8 @@ class StageScene(GameScene):
         GLOBALS.clear_stage(self.id)
         pg.time.set_timer(pg.event.Event(PLAY_SFX, sfx="WinJazzGuitar"), 1000, 1)
         pg.time.set_timer(PLAYER_JUMP, 2500, 1)
-        pg.time.set_timer(pg.event.Event(CHANGE_SCENE, next_scene_id=(self.id[0], 0)), 3000, 1)
+        if self.id[1] != 8:
+            pg.time.set_timer(pg.event.Event(CHANGE_SCENE, next_scene_id=(self.id[0], 0)), 3000, 1)
+        else:
+            pg.time.set_timer(pg.event.Event(CHANGE_SCENE, next_scene_id=(0, 0)), 3000, 1)
+

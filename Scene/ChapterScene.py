@@ -50,8 +50,4 @@ class ChapterScene(GameScene):
         if self.id[0] == 0:
             pg.event.post(pg.event.Event(CHANGE_SCENE, next_scene_id=(entity.id, 0)))
         else:
-            if entity.id == 9:
-                GLOBALS.clear_stage((self.id, 0))
-                pg.event.post(pg.event.Event(CHANGE_SCENE, next_scene_id=(0, 0)))   
-            else:
-                pg.event.post(pg.event.Event(CHANGE_SCENE, next_scene_id=(self.id[0], entity.id)))
+            pg.event.post(pg.event.Event(CHANGE_SCENE, next_scene_id=(self.id[0], entity.id)))

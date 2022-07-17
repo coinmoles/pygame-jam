@@ -23,6 +23,8 @@ class GameGlobals:
     
     def clear_stage(self, stage_id: Tuple[int, int]):
         self.cleared_stages.add(stage_id)
+        if stage_id[1] == 8:
+            self.cleared_stages.add((stage_id[0], 0))
 
     def load_images(self):
         path = './assets/images'

@@ -60,9 +60,8 @@ def parse_menu(s: str, cur_id: int) -> Callable[[], Tuple[pg.sprite.Group, pg.Re
                     if int(m[i][j]) == 1 or (cur_id, int(m[i][j]) - 1) in GLOBALS.cleared_stages:
                         locked = False
                 
-                # TODO: close them
-                entities.add(DoorTop(position - Vector2(0, UNITSIZE), False))
-                entities.add(Door(position, int(m[i][j]), False))
+                entities.add(DoorTop(position - Vector2(0, UNITSIZE), locked))
+                entities.add(Door(position, int(m[i][j]), locked))
 
     def stage():
         return entities, stage_rect, player_spawn
