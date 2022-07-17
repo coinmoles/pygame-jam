@@ -9,7 +9,7 @@ p...............J...J..ppppppppp
 .......................ppppppppp
 .......................ppppppppp
 .......ppp........J....ppppppppp
-......pppp.............ppppppppp
+......ppp..............ppppppppp
 .....pp................ppppppppp
 pppppppk....c...J......ppppppppp
 pppppppk..kppppppppppppppppppppp
