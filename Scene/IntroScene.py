@@ -19,7 +19,7 @@ class IntroScene(Scene):
         if event.type == pg.KEYDOWN:
             if event.key == pg.K_RETURN:
                 if self.choice == 0:
-                    pg.event.post(pg.event.Event(CHANGE_SCENE, next_scene_id=(1, 1)))
+                    pg.event.post(pg.event.Event(CHANGE_SCENE, next_scene_id=(2, 1)))
                 elif self.choice == 1:
                     pg.event.post(pg.event.Event(OPEN_LOAD, current_id=(-1, 0)))
                 elif self.choice == 2:
