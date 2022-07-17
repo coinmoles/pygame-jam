@@ -16,7 +16,7 @@ class StageScene(GameScene):
         self.stage = parse_stage(stage, _id)
         self.set_stage()
 
-        self.music_path = "assets/sound/music/GrasslandsTheme.mp3"
+        self.music_path = "assets/sound/music/GrasslandsTheme.mp3" if self.id[0] == 1 else  "assets/sound/music/DungeonTheme.mp3"
     
     def handle_event(self, event: pg.event.Event):
         super().handle_event(event)

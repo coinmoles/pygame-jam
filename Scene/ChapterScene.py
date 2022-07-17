@@ -7,6 +7,7 @@ from Scene.GameScene import GameScene
 from SceneData.parse_menu import parse_menu
 import pygame as pg
 from constants import CHANGE_SCENE, OPEN_LOAD, OPEN_SAVE, UNITSIZE
+from globals import GLOBALS
 
 
 class ChapterScene(GameScene):
@@ -45,8 +46,12 @@ class ChapterScene(GameScene):
             return
         
         self.player.active = False
-        
+
         if self.id[0] == 0:
             pg.event.post(pg.event.Event(CHANGE_SCENE, next_scene_id=(entity.id, 0)))
         else:
-            pg.event.post(pg.event.Event(CHANGE_SCENE, next_scene_id=(self.id[0], entity.id)))
+            if entity.id == 9:
+                GLOBALS.clear_stage((self.id, 0))
+                pg.event.post(pg.event.Event(CHANGE_SCENE, next_scene_id=(0, 0)))   
+            else:
+                pg.event.post(pg.event.Event(CHANGE_SCENE, next_scene_id=(self.id[0], entity.id)))
