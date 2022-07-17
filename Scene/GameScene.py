@@ -2,8 +2,8 @@ from typing import Tuple
 import pygame as pg
 from pygame.math import Vector2
 from Scene.Scene import Scene
-from SceneData.parse_stage import parse_stage
 from Entity.Entity import Entity
+from Entity.Item.Item import Item
 from Entity.Player import Player
 from constants import PLAYER_DEATH, SCREEN, CAMERA_RECT, SET_SPAWN, DESPAWN, SPAWN, TRANSFORM, TRANSFORM_END, UNITSIZE
 from globals import GLOBALS
@@ -160,11 +160,13 @@ class GameScene(Scene):
             self.camera_base.y = self.stage_rect.height - SCREEN.height
 
     def spawn_entity(self, entity: Entity):
+        print("spawn:", entity)
         self.entityList.add(entity)
         if entity.collide_check:
             self.collidables.add(entity)
 
     def despawn_entity(self, entity: Entity):
+        print("despawn:", entity)
         if entity == self.player:
             corpse = self.player.spawn_corpse()
             self.corpses.append(corpse)
@@ -177,7 +179,7 @@ class GameScene(Scene):
             self.player = Player(self.player_spawn)
             self.spawn_entity(self.player)
 
-        if not (entity in self.corpses or isinstance(entity, Player)):
+        if isinstance(entity, Item):
             self.despawned.add(entity)
         
         self.collidables.remove(entity)
