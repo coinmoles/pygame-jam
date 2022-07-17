@@ -9,9 +9,9 @@ from SceneData.chapter1.stage1_5 import stage1_5
 from SceneData.chapter1.stage1_6 import stage1_6
 from SceneData.chapter1.stage1_7 import stage1_7
 from SceneData.chapter1.stage1_8 import stage1_8
-from SceneData.chapter2.stage2_1 import stage2_1
-from SceneData.chapter2.stage2_2 import stage2_2
-from SceneData.chapter2.stage2_3 import stage2_3
+from SceneData.chapter2.stage2_2 import stage2_1
+from SceneData.chapter2.stage2_3 import stage2_2
+from SceneData.chapter2.stage2_4 import stage2_3
 
 
 stages = {
