@@ -1,5 +1,4 @@
 from re import S
-from tkinter import UNITS
 from typing import Tuple
 from Entity.Door import Door
 from Entity.BackgroundObject.ControlHelp import ControlHelp
