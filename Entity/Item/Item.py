@@ -17,7 +17,7 @@ class Item(Entity):
 
     def update(self, camera_base: Vector2):
         self.vel = Vector2(0, math.sin(GLOBALS.timer * math.pi / 20))
-        super().update(camera_base, GLOBALS.timer)
+        super().update(camera_base)
 
     def collide_player(self, player, side):
         player.set_ability(self.ability_give())

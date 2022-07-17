@@ -17,6 +17,9 @@ class Cannon(Platform):
         self.item_id = 1
 
     def update_active(self):
+        if GLOBALS.timer == 0:
+            return
+        
         if GLOBALS.timer % (FPS * 5) == 0:
             pg.event.post(pg.event.Event(
                 SPAWN, entity=Fireball(self.pos - Vector2(self.rect.width, 0), Vector2(-5, 0))
