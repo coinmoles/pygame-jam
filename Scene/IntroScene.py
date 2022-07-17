@@ -10,7 +10,7 @@ class IntroScene(Scene):
         self.entityList.add(Background())
         self.music_path = "assets/sound/music/IntroTheme.mp3"
 
-        self.choice = 0
+        self.choice = -1
         self.titlefont = pg.font.Font("assets/font/jangmi.ttf", 144 * SCREEN.width // 1920)
         self.optionfont = pg.font.Font("assets/font/jangmi.ttf", 80 * SCREEN.width // 1920)
 
@@ -19,11 +19,13 @@ class IntroScene(Scene):
         if event.type == pg.KEYDOWN:
             if event.key == pg.K_RETURN:
                 if self.choice == 0:
-                    pg.event.post(pg.event.Event(CHANGE_SCENE, next_scene_id=(0, 0)))
+                    pg.event.post(pg.event.Event(CHANGE_SCENE, next_scene_id=(1, 1)))
                 elif self.choice == 1:
                     pg.event.post(pg.event.Event(CHANGE_SCENE, next_scene_id=(0, 0)))
                 elif self.choice == 2:
                     pg.event.post(pg.event.Event(pg.QUIT))
+                else:
+                    self.choice = 0
 
             elif event.key == pg.K_UP:
                 self.choice = (self.choice + 2) % 3

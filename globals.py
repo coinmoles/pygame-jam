@@ -35,6 +35,8 @@ class GameGlobals:
                         image = pg.transform.scale(image, (UNITSIZE * 2 / 3 * 1.05, UNITSIZE * 1.05))
                 elif subdir == "./assets/images\\background":
                     image = pg.transform.scale(image, (SCREEN.width, SCREEN.height))
+                elif subdir == "./assets/images\\control_help":
+                    image = pg.transform.scale(image, (UNITSIZE * 2, UNITSIZE * 2))
                 else:
                     image = pg.transform.scale(image, (UNITSIZE, UNITSIZE))
                 self.images[image_name] = image

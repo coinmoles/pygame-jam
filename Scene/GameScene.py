@@ -55,10 +55,13 @@ class GameScene(Scene):
                 if event.key == pg.K_SPACE:
                     if self.player.active:
                         self.player.jump()
-                if event.key == pg.K_q:
+                if event.key == pg.K_ESCAPE:
                     self.player.despawn()
                 if event.key == pg.K_w:
                     self.reset_stage()
+                if event.key == pg.K_q:
+                    corpse = self.corpses.pop()
+                    self.despawn_entity(corpse)
         
         elif event.type == SET_SPAWN:
             self.player_spawn = event.spawn
@@ -166,13 +169,11 @@ class GameScene(Scene):
             self.camera_base.y = self.stage_rect.height - SCREEN.height
 
     def spawn_entity(self, entity: Entity):
-        print("spawn:", entity)
         self.entityList.add(entity)
         if entity.collide_check:
             self.collidables.add(entity)
 
     def despawn_entity(self, entity: Entity):
-        print("despawn:", entity)
         if entity == self.player:
             corpse = self.player.spawn_corpse()
             self.corpses.append(corpse)
