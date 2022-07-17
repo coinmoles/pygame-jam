@@ -2,13 +2,14 @@ import pygame as pg
 from Scene.Scene import Scene
 from constants import CHANGE_SCENE, COLORS, SCREEN
 from globals import GLOBALS
+from helper.get_background_color import get_background_color
 from helper.save_load import save_game
 
 class SaveScene(Scene):
     def __init__(self, current_id):
         super().__init__((-1, 0))
         self.music_path = "assets/sound/music/IcelandTheme.mp3"
-
+        self.background_color = get_background_color(current_id)
         self.saving = False
         self.choice = -1
         self.current_id = current_id

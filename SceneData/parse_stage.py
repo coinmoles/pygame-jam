@@ -1,11 +1,9 @@
-from math import pi
-from typing import Callable, Dict, Final, Tuple
-
+from typing import Callable, Tuple
 import pygame as pg
 from pygame.math import Vector2
 from Entity.BackgroundObject.ControlHelp import ControlHelp
+from Entity.DirtPlatform import DirtPlatform
 from Entity.CheckPoint import CheckPoint
-from Entity.Door import Door
 from Entity.GrassPlatform import GrassPlatform
 from Entity.Item.CannonItem import CannonItem
 from Entity.Spike import Spike
@@ -13,34 +11,7 @@ from Entity.JumpPlatform import JumpPlatform
 from Entity.Item.JumpItem import JumpItem
 from Entity.Goal import Goal
 from Entity.Cannon import Cannon
-from constants import COLORS, UNITSIZE
-from Entity.Platform import Platform
-from globals import GLOBALS
-
-TOKENS: Final[Dict[str, str]] = {
-    "GrassPlatform": "p",
-    "Spike": "k",
-    "CheckPoint": "c",
-    "JumpItem": "j",
-    "JumpPlatform": "J",
-    "Goal": "d",
-    "SpawnPoint": "s",
-    "Cannon0": "g",
-    "Cannon1": "y",
-    "Cannon2": "u",
-    "Cannon3": "h",
-    "CannonItem": "G",
-    "Control1": "!",
-    "Control2": "@",
-    "Control3": "#",
-    "Control4": "$",
-    "Control5": "%",
-    "Control6": "^",
-    "Control7": "&",
-    "Control8": "*",
-    "Control9": "(",
-}
-
+from constants import PLATFORMS, TOKENS, UNITSIZE
 
 def parse_stage(s: str, _id: Tuple[int, int]) -> Callable[[], Tuple[pg.sprite.Group, pg.Rect, Vector2]]:
     m = [list(l) for l in s.strip().split('\n')]
@@ -61,17 +32,23 @@ def parse_stage(s: str, _id: Tuple[int, int]) -> Callable[[], Tuple[pg.sprite.Gr
             position = Vector2(UNITSIZE * j, UNITSIZE * i)
             
             if m[i][j] == TOKENS["GrassPlatform"]:
-                if i - 1 >= 0 and m[i-1][j] == TOKENS["GrassPlatform"]:
+                if i - 1 >= 0 and m[i-1][j] in PLATFORMS:
                     entities.add(GrassPlatform(position, False))
                 else:
                     entities.add(GrassPlatform(position, True))
 
+            if m[i][j] == TOKENS["DirtPlatform"]:
+                if i - 1 >= 0 and m[i-1][j] in PLATFORMS:
+                    entities.add(DirtPlatform(position, False))
+                else:
+                    entities.add(DirtPlatform(position, True))
+            
             if m[i][j] == TOKENS["Spike"]:
-                if i + 1 < height and m[i + 1][j] == TOKENS["GrassPlatform"]:
+                if i + 1 < height and m[i + 1][j] in PLATFORMS:
                     entities.add(Spike(position, 0))
-                elif j - 1 >= 0 and m[i][j - 1] == TOKENS["GrassPlatform"]:
+                elif j - 1 >= 0 and m[i][j - 1] in PLATFORMS:
                     entities.add(Spike(position, 1))
-                elif j + 1 < width and m[i][j + 1] == TOKENS["GrassPlatform"]:
+                elif j + 1 < width and m[i][j + 1] in PLATFORMS:
                     entities.add(Spike(position, 3))
                 else:
                     entities.add(Spike(position, 2))                 
@@ -100,6 +77,10 @@ def parse_stage(s: str, _id: Tuple[int, int]) -> Callable[[], Tuple[pg.sprite.Gr
         
             for k in range(4):
                 if m[i][j] == TOKENS["Cannon" + str(k)]:
+                    if i - 1 >= 0 and m[i-1][j] in PLATFORMS:
+                        entities.add(DirtPlatform(position, False))
+                    else:
+                        entities.add(DirtPlatform(position, True))
                     entities.add(Cannon(position, k))
 
             if m[i][j] == TOKENS["SpawnPoint"]:

@@ -11,6 +11,7 @@ from SceneData.chapter1.stage1_7 import stage1_7
 from SceneData.chapter1.stage1_8 import stage1_8
 from SceneData.chapter2.stage2_1 import stage2_1
 from SceneData.chapter2.stage2_2 import stage2_2
+from SceneData.chapter2.stage2_3 import stage2_3
 
 
 stages = {
@@ -28,5 +29,10 @@ stages = {
         "stage6": stage1_6,
         "stage7": stage1_7,
         "stage8": stage1_8,
+    },
+    "ch2": {
+        "stage1": stage2_1,
+        "stage2": stage2_2,
+        "stage3": stage2_3,
     }
 }

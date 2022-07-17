@@ -4,6 +4,7 @@ import pygame as pg
 import sys
 from pygame.math import Vector2
 from globals import GLOBALS
+from helper.get_background_color import get_background_color
 
 
 class Scene:
@@ -14,6 +15,7 @@ class Scene:
 
         self.music_path = ""
         self.camera_base: Vector2 = Vector2(0, 0)
+        self.background_color = get_background_color(self.id[0])
 
     def scene_start(self):
         GLOBALS.reset_timer()
@@ -25,7 +27,7 @@ class Scene:
         pg.mixer.music.unload()
 
     def update(self):
-        GLOBALS.screen.fill((208, 244, 247))
+        GLOBALS.screen.fill(self.background_color)
 
         for entity in self.entityList:
             entity.draw(self.camera_base)

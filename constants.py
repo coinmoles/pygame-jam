@@ -1,3 +1,4 @@
+from typing import Dict, Final
 from screeninfo import get_monitors
 import pygame as pg
 
@@ -24,6 +25,39 @@ OPEN_LOAD = pg.USEREVENT + 12
 OPEN_SAVE = pg.USEREVENT + 13
 END_SAVELOAD = pg.USEREVENT + 14
 
+TOKENS: Final[Dict[str, str]] = {
+    "GrassPlatform": "p",
+    "DirtPlatform": "q",
+    "Spike": "k",
+    "CheckPoint": "c",
+    "JumpItem": "j",
+    "JumpPlatform": "J",
+    "Goal": "d",
+    "SpawnPoint": "s",
+    "Cannon0": "g",
+    "Cannon1": "y",
+    "Cannon2": "u",
+    "Cannon3": "h",
+    "CannonItem": "G",
+    "Control1": "!",
+    "Control2": "@",
+    "Control3": "#",
+    "Control4": "$",
+    "Control5": "%",
+    "Control6": "^",
+    "Control7": "&",
+    "Control8": "*",
+    "Control9": "(",
+}
+
+PLATFORMS = [
+    TOKENS["GrassPlatform"], 
+    TOKENS["DirtPlatform"],
+    TOKENS["Cannon0"],
+    TOKENS["Cannon1"],
+    TOKENS["Cannon2"],
+    TOKENS["Cannon3"],
+]
 
 COLORS = {
     'black': (0, 0, 0),

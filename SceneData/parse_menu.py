@@ -1,29 +1,14 @@
-from typing import Callable, Dict, Final, Tuple
-
+from typing import Callable, Tuple
 import pygame as pg
 from pygame.math import Vector2
 from Entity.BackgroundObject.ControlHelp import ControlHelp
 from Entity.BackgroundObject.DoorTop import DoorTop
 from Entity.Door import Door
 from Entity.GrassPlatform import GrassPlatform
+from Entity.DirtPlatform import DirtPlatform
 from Entity.JumpPlatform import JumpPlatform
-from constants import UNITSIZE
+from constants import PLATFORMS, TOKENS, UNITSIZE
 from globals import GLOBALS
-
-TOKENS: Final[Dict[str, str]] = {
-    "GrassPlatform": "p",
-    "SpawnPoint": "s",
-    "JumpPlatform": "J",
-    "Control1": "!",
-    "Control2": "@",
-    "Control3": "#",
-    "Control4": "$",
-    "Control5": "%",
-    "Control6": "^",
-    "Control7": "&",
-    "Control8": "*",
-    "Control9": "(",
-}
 
 
 def parse_menu(s: str, cur_id: int) -> Callable[[], Tuple[pg.sprite.Group, pg.Rect, Tuple[int, int]]]:
@@ -45,10 +30,16 @@ def parse_menu(s: str, cur_id: int) -> Callable[[], Tuple[pg.sprite.Group, pg.Re
             position = Vector2(UNITSIZE * j, UNITSIZE * i)
 
             if m[i][j] == TOKENS["GrassPlatform"]:
-                if i - 1 >= 0 and m[i-1][j] == TOKENS["GrassPlatform"]:
+                if i - 1 >= 0 and m[i-1][j] in PLATFORMS:
                     entities.add(GrassPlatform(position, False))
                 else:
                     entities.add(GrassPlatform(position, True))
+
+            if m[i][j] == TOKENS["DirtPlatform"]:
+                if i - 1 >= 0 and m[i-1][j] in PLATFORMS:
+                    entities.add(DirtPlatform(position, False))
+                else:
+                    entities.add(DirtPlatform(position, True))
 
             if m[i][j] == TOKENS["JumpPlatform"]:
                 entities.add(JumpPlatform(position))
@@ -68,9 +59,10 @@ def parse_menu(s: str, cur_id: int) -> Callable[[], Tuple[pg.sprite.Group, pg.Re
                 else:
                     if int(m[i][j]) == 1 or (cur_id, int(m[i][j]) - 1) in GLOBALS.cleared_stages:
                         locked = False
-                    
-                entities.add(DoorTop(position - Vector2(0, UNITSIZE), locked))
-                entities.add(Door(position, int(m[i][j]), locked))
+                
+                # TODO: close them
+                entities.add(DoorTop(position - Vector2(0, UNITSIZE), False))
+                entities.add(Door(position, int(m[i][j]), False))
 
     def stage():
         return entities, stage_rect, player_spawn
