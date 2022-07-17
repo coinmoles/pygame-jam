@@ -24,6 +24,12 @@ class ChapterScene(GameScene):
                 pg.event.post(pg.event.Event(OPEN_SAVE, current_id=self.id))
             elif event.key == pg.K_f:
                 pg.event.post(pg.event.Event(OPEN_LOAD, current_id=self.id))
+
+            if event.key == pg.K_ESCAPE:
+                if self.id[0] == 0:
+                    return
+                else:
+                    pg.event.post(pg.event.Event(CHANGE_SCENE, next_scene_id=(0, 0)))
             
         super().handle_event(event)
 

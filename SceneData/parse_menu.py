@@ -23,6 +23,8 @@ TOKENS: Final[Dict[str, str]] = {
     "Control5": "%",
     "Control6": "^",
     "Control7": "&",
+    "Control8": "*",
+    "Control9": "(",
 }
 
 
@@ -53,7 +55,7 @@ def parse_menu(s: str, cur_id: int) -> Callable[[], Tuple[pg.sprite.Group, pg.Re
             if m[i][j] == TOKENS["SpawnPoint"]:
                 player_spawn = position
             
-            for k in range(1, 8):
+            for k in range(1, 10):
                 if m[i][j] == TOKENS["Control" + str(k)]:
                     entities.add(ControlHelp(position, k))
 

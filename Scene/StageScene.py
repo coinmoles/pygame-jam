@@ -20,6 +20,10 @@ class StageScene(GameScene):
 
     def handle_event(self, event: pg.event.Event):
         super().handle_event(event)
+        if event.type == pg.KEYDOWN:
+            if event.key == pg.K_ESCAPE:
+                pg.event.post(pg.event.Event(CHANGE_SCENE, next_scene_id=(self.id[0], 0)))
+
         if event.type == STAGE_CLEAR:
             self.stage_clear()
         
