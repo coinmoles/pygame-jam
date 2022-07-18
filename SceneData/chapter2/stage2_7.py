@@ -7,11 +7,11 @@ stage2_7 = """
 ......................qqqqq
 ...........................
 .......s..qqqqqqqqqqqq.....
-qk....gqqq..............qgq
-qk....ggqq..............gqq
-qk....pgqgj.k...........qqq
-qk....gqgqqqq...........ggq
-qk.c...j......J.........gqq
+qk....gqqq..............qg.
+qk....ggqq..............gq.
+qk....pgqgj.k...........qq.
+qk....gqgqqqq...........gg.
+qk.c...j......J.........gq.
 qqqqqqqqqqqqqqqqqqqqqqqqqqq
 qqqqqqqqqqqqqqqqqqqqqqqqqqq
 """
