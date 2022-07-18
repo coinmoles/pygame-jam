@@ -7,8 +7,8 @@ from typing import Callable, List
 
 from globals import GLOBALS
 
-GROUND_ACC = 2
-AIR_ACC = 0.3
+GROUND_ACC = 2 * UNITSIZE / 100
+AIR_ACC = 0.3 * UNITSIZE / 100
 GROUND_FRIC = -0.3
 AIR_FRIC = -0.05
 
@@ -133,7 +133,7 @@ class Player(Entity):
             return
         
         if self.grounded or not self.active:
-            self.vel.y = -30
+            self.vel.y = - UNITSIZE * 3 // 10
             self.grounded = False
             pg.mixer.Sound.play(GLOBALS.sfx_dict["Jump"])
             self.set_animation("jump")

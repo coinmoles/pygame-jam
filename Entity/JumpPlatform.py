@@ -1,5 +1,5 @@
 from Entity.Platform import Platform
-from constants import FPS
+from constants import FPS, UNITSIZE
 from pygame.math import Vector2
 import pygame as pg
 from globals import GLOBALS
@@ -11,5 +11,5 @@ class JumpPlatform(Platform):
         
     def collide_player(self, player, side):
         if side == "top" or side == "left" or side == "right":
-            player.vel.y = -50
+            player.vel.y = - UNITSIZE // 2
             pg.mixer.Sound.play(GLOBALS.sfx_dict["Jump"])
