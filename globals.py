@@ -8,8 +8,8 @@ from constants import SCREEN, UNITSIZE
 class GameGlobals:
     def __init__(self):
         self.timer = 0
-        self.screen: Union[pg.Surface, None] = None
-        self.images: Dict[str, pg.Surface] = {}
+        self.screen: Union[pg.surface.Surface, None] = None
+        self.images: Dict[str, pg.surface.Surface] = {}
         self.image_rect: Dict[str, pg.Rect] = {}
         self.sfx_dict: Dict[str, pg.mixer.Sound] = {}
         self.cleared_stages: Set[Tuple[int, int]] = set()

@@ -8,6 +8,7 @@ stage2_4 = """
 .s....G...kq.c..G.k...........d...
 qqqqqqqqqqqqqqqqqqq......qqqqqqqqq
 qqqqqqqqqqqqqqqqqqq......qqqqqqqqq
+qqqqqqqqqqqqqqqqqqq......qqqqqqqqq
 qqqqqqqqqqqqqqqqqqqkkkkkkqqqqqqqqq
 qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
 """
